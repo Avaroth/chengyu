@@ -34,7 +34,6 @@
             flex-direction: column;
         }
 
-        /* main content area */
         .page-content {
             flex: 1;
             padding: 32px 24px;
@@ -42,7 +41,7 @@
             flex-direction: column;
         }
 
-        /* page 1 - minimal */
+        /* page 1 */
         .page1-center {
             flex: 1;
             display: flex;
@@ -69,7 +68,7 @@
             font-weight: 500;
         }
 
-        /* page 2 - meaning first, then characters */
+        /* page 2 */
         .page2-header {
             text-align: center;
             margin-bottom: 24px;
@@ -139,81 +138,89 @@
             color: #5c4b38;
         }
 
-        /* page 3 quiz */
+        /* page 3 - yes/no icons */
         .quiz-header {
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 24px;
         }
         .quiz-header-chengyu {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 600;
             color: #2c241a;
             margin-bottom: 8px;
         }
         .quiz-header-pinyin {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #b87c4f;
         }
-        .quiz-scenario {
+        .quiz-subheader {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #8f7358;
+        }
+        .scenario-card {
             background: #f5efe8;
-            border-radius: 24px;
-            padding: 18px;
-            margin-bottom: 18px;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
         .scenario-text {
-            margin-bottom: 12px;
+            font-size: 1rem;
             line-height: 1.45;
-            font-size: 0.9rem;
+            margin-bottom: 18px;
         }
-        .quiz-options {
+        .yesno-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            gap: 20px;
+            justify-content: center;
         }
-        .quiz-choice {
+        .yesno-btn {
             background: white;
-            border: 1.5px solid #e3d8ce;
+            border: 2px solid #e3d8ce;
             border-radius: 60px;
-            padding: 10px 16px;
+            padding: 14px 0;
+            font-size: 1.8rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
             text-align: center;
+            flex: 1;
+            max-width: 100px;
         }
-        .quiz-choice.selected {
-            background: #e0cfbc;
-            border-color: #b2824a;
+        .yesno-btn:active {
+            transform: scale(0.95);
         }
-        .quiz-choice.correct-highlight {
+        .yesno-btn.selected-correct {
             background: #c8e0c8;
             border-color: #4a7c4a;
+            color: #2a5a2a;
         }
-        .quiz-choice.wrong-highlight {
+        .yesno-btn.selected-wrong {
             background: #f0d8d8;
             border-color: #c97a7a;
+            color: #8b3a3a;
         }
         .feedback-msg {
-            margin-top: 10px;
+            margin-top: 14px;
+            font-size: 0.85rem;
             font-weight: 500;
-            font-size: 0.8rem;
             text-align: center;
         }
         .reset-quiz-btn {
             background: #e0cfbc;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             width: 100%;
-            margin-top: 8px;
+            margin-top: 12px;
         }
         .reset-quiz-btn:active {
             transform: scale(0.97);
         }
 
-        /* bottom navigation - two rows */
+        /* navigation */
         .nav-arrows {
             display: flex;
             justify-content: space-between;
@@ -238,7 +245,6 @@
             transform: scale(0.96);
             background: #e0d5c8;
         }
-        
         .nav-actions {
             display: flex;
             justify-content: space-between;
@@ -267,7 +273,6 @@
             color: white;
         }
 
-        /* responsive for very small phones */
         @media (max-width: 400px) {
             .chengyu-characters {
                 font-size: 2.5rem;
@@ -285,6 +290,10 @@
                 font-size: 1.5rem;
                 padding: 14px 0;
             }
+            .yesno-btn {
+                font-size: 1.5rem;
+                padding: 12px 0;
+            }
         }
     </style>
 </head>
@@ -292,7 +301,7 @@
 <div class="card">
     <div class="page-content" id="pageContent"></div>
 
-    <div class="nav-arrows" id="navArrows">
+    <div class="nav-arrows">
         <button class="nav-arrow" id="prevPageBtn">←</button>
         <button class="nav-arrow" id="nextPageBtn">→</button>
     </div>
@@ -317,9 +326,9 @@
                 { char: "足", pinyin: "zú", english: "foot/feet" }
             ],
             scenarios: [
-                { text: "一个产品本来已经很好了，团队非要加很多没用的功能，结果用户体验变差。", correct: "画蛇添足" },
-                { text: "他本来演讲已经很完美了，却额外加了一堆笑话，反而冷场了。", correct: "画蛇添足" },
-                { text: "她认真准备了考试，最后取得了好成绩。", correct: "画蛇添足" }
+                { text: "他给已经完美的画又加了几笔，结果反而不好看了。", correct: true },
+                { text: "演讲稿已经很好了，他又加了一堆废话，听众都走神了。", correct: true },
+                { text: "她认真复习，考试得了满分。", correct: false }
             ]
         },
         {
@@ -334,9 +343,9 @@
                 { char: "琴", pinyin: "qín", english: "string instrument" }
             ],
             scenarios: [
-                { text: "你给一个从不看书的人讲文学理论，讲了半天他毫无反应。", correct: "对牛弹琴" },
-                { text: "老师向认真学习的学生讲解难题，学生很快理解了。", correct: "对牛弹琴" },
-                { text: "他在音乐会上演奏了一首名曲，观众热烈鼓掌。", correct: "对牛弹琴" }
+                { text: "你跟一个从不听古典乐的人讲贝多芬，他毫无反应。", correct: true },
+                { text: "给不懂代码的人解释复杂算法，说了半天他完全听不懂。", correct: true },
+                { text: "老师给认真听课的学生讲解难题，学生很快就理解了。", correct: false }
             ]
         },
         {
@@ -351,9 +360,9 @@
                 { char: "兔", pinyin: "tù", english: "rabbit" }
             ],
             scenarios: [
-                { text: "他上次靠运气通过考试，这次又不好好复习，指望再走运。", correct: "守株待兔" },
-                { text: "农民每天勤奋种地，秋天丰收了。", correct: "守株待兔" },
-                { text: "公司不创新，只等老客户上门，生意越来越差。", correct: "守株待兔" }
+                { text: "他上次蒙对了一道题，这次不复习还想靠运气过关。", correct: true },
+                { text: "公司不创新不开发新产品，天天坐在店里等老客户。", correct: true },
+                { text: "他每天勤奋工作，主动寻找机会，最后得到了晋升。", correct: false }
             ]
         },
         {
@@ -368,9 +377,9 @@
                 { char: "蛙", pinyin: "wā", english: "frog" }
             ],
             scenarios: [
-                { text: "某人认为自己的小城市就是全世界最好的地方，从没见过其他地方。", correct: "井底之蛙" },
-                { text: "一位环球旅行家分享各地文化，大家都很受益。", correct: "井底之蛙" },
-                { text: "她只懂自己的专业，对其他领域一无所知还看不起别人。", correct: "井底之蛙" }
+                { text: "他从没出过省，却觉得自己的小城市是全世界最好的地方。", correct: true },
+                { text: "她只懂自己的专业，看不起其他所有领域，觉得别的都不重要。", correct: true },
+                { text: "他环游世界后，在聚会上分享了各地的有趣文化和见闻。", correct: false }
             ]
         },
         {
@@ -384,9 +393,9 @@
                 { char: "绸缪", pinyin: "chóu móu", english: "to bind/tie up" }
             ],
             scenarios: [
-                { text: "他每个月存一部分工资，以防将来生病或失业。", correct: "未雨绸缪" },
-                { text: "台风要来之前，他家提前加固了窗户。", correct: "未雨绸缪" },
-                { text: "他花光了所有钱，结果生病时没钱看病。", correct: "未雨绸缪" }
+                { text: "他每个月都存一部分工资，以防将来生病或失业。", correct: true },
+                { text: "台风来之前，他们家提前加固了门窗，储备了食物和水。", correct: true },
+                { text: "他花光了所有积蓄，结果生病时没钱看病。", correct: false }
             ]
         }
     ];
@@ -428,7 +437,6 @@
         const container = document.getElementById("pageContent");
         
         if (currentPage === 0) {
-            // Page 1: Just chengyu + pinyin
             container.innerHTML = `
                 <div class="page1-center">
                     <div class="chengyu-characters">${c.chengyu}</div>
@@ -437,7 +445,6 @@
             `;
         } 
         else if (currentPage === 1) {
-            // Page 2: MEANINGS FIRST, then character breakdown
             container.innerHTML = `
                 <div class="page2-header">
                     <div class="page2-chengyu">${c.chengyu}</div>
@@ -459,57 +466,59 @@
             `;
         } 
         else {
-            // Page 3: Quiz
             if (quizAnswers.length !== c.scenarios.length) {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
             }
+            
             let quizHtml = `
                 <div class="quiz-header">
                     <div class="quiz-header-chengyu">${c.chengyu}</div>
                     <div class="quiz-header-pinyin">${c.pinyin}</div>
+                    <div class="quiz-subheader">适合这个成语吗？</div>
                 </div>
             `;
+            
             c.scenarios.forEach((scenario, idx) => {
-                let selected = quizAnswers[idx];
-                let otherChengyus = CHENGYU_SET.filter((_, i) => i !== currentDay).map(c => c.chengyu).slice(0,2);
-                while(otherChengyus.length < 2) otherChengyus.push("一心一意");
-                let options = [c.chengyu, ...otherChengyus].sort(() => Math.random() - 0.5);
+                let answer = quizAnswers[idx];
+                let isCorrect = (answer !== null && answer === scenario.correct);
+                let isWrong = (answer !== null && answer !== scenario.correct);
                 
-                quizHtml += `<div class="quiz-scenario" data-idx="${idx}">
+                quizHtml += `<div class="scenario-card" data-idx="${idx}">
                                 <div class="scenario-text">📖 ${scenario.text}</div>
-                                <div class="quiz-options">`;
-                options.forEach(opt => {
-                    let isSelected = (selected === opt);
-                    let extraClass = "";
-                    if (selected !== null) {
-                        if (opt === scenario.correct) extraClass = "correct-highlight";
-                        if (selected === opt && opt !== scenario.correct) extraClass = "wrong-highlight";
+                                <div class="yesno-buttons">
+                                    <div class="yesno-btn ${answer !== null && answer === true ? (isCorrect ? 'selected-correct' : 'selected-wrong') : ''}" data-choice="true">✓</div>
+                                    <div class="yesno-btn ${answer !== null && answer === false ? (isCorrect ? 'selected-correct' : 'selected-wrong') : ''}" data-choice="false">✗</div>
+                                </div>`;
+                
+                if (answer !== null) {
+                    if (isCorrect) {
+                        quizHtml += `<div class="feedback-msg" style="color:#2a6b3c;">✓ 正确</div>`;
+                    } else {
+                        quizHtml += `<div class="feedback-msg" style="color:#b13e3e;">✗ ${scenario.correct ? '这其实是适合的' : '其实不适合'}</div>`;
                     }
-                    quizHtml += `<div class="quiz-choice ${isSelected ? 'selected' : ''} ${extraClass}" data-opt="${opt}">${opt}</div>`;
-                });
-                quizHtml += `</div>`;
-                if (selected !== null) {
-                    if (selected === scenario.correct) quizHtml += `<div class="feedback-msg" style="color:#2a6b3c;">✓ 正确</div>`;
-                    else quizHtml += `<div class="feedback-msg" style="color:#b13e3e;">✗ 正确答案: ${scenario.correct}</div>`;
                 }
                 quizHtml += `</div>`;
             });
+            
             let allAnswered = quizAnswers.every(a => a !== null);
             if (allAnswered) {
                 quizHtml += `<button class="reset-quiz-btn" id="resetQuizBtn">⟳ 重做</button>`;
             }
+            
             container.innerHTML = quizHtml;
             
-            document.querySelectorAll('.quiz-choice').forEach(el => {
-                el.addEventListener('click', (e) => {
-                    let scenarioDiv = el.closest('.quiz-scenario');
-                    let idx = parseInt(scenarioDiv.dataset.idx);
-                    if (quizAnswers[idx] !== null) return;
-                    let selectedOpt = el.dataset.opt;
-                    quizAnswers[idx] = selectedOpt;
-                    renderPage();
+            document.querySelectorAll('.scenario-card').forEach(card => {
+                const idx = parseInt(card.dataset.idx);
+                card.querySelectorAll('.yesno-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (quizAnswers[idx] !== null) return;
+                        const choice = btn.dataset.choice === 'true';
+                        quizAnswers[idx] = choice;
+                        renderPage();
+                    });
                 });
             });
+            
             const resetBtn = document.getElementById("resetQuizBtn");
             if (resetBtn) resetBtn.onclick = () => {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
@@ -523,7 +532,6 @@
     function updateNavVisibility() {
         const nextArrow = document.getElementById("nextPageBtn");
         if (currentPage === 2) {
-            // On page 3, hide the forward arrow
             nextArrow.style.visibility = "hidden";
             nextArrow.style.opacity = "0";
             nextArrow.style.pointerEvents = "none";

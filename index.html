@@ -21,7 +21,6 @@
             padding: 20px;
         }
 
-        /* main card */
         .card {
             max-width: 550px;
             width: 100%;
@@ -34,7 +33,6 @@
             flex-direction: column;
         }
 
-        /* header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -58,8 +56,15 @@
             padding: 6px 14px;
             border-radius: 40px;
         }
+        .reset-small {
+            background: transparent;
+            border: 1px solid #ddd0c0;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
 
-        /* main content area */
         .page-content {
             flex: 1;
             padding: 32px 24px;
@@ -68,50 +73,30 @@
             flex-direction: column;
         }
 
-        /* page 1 */
-        .chengyu-large {
+        /* page 1 - minimal */
+        .page1-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            margin: 20px 0 16px;
         }
         .chengyu-characters {
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 700;
-            letter-spacing: 8px;
+            letter-spacing: 12px;
             color: #2c241a;
             font-family: 'Noto Serif SC', 'KaiTi', serif;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
         .pinyin {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #b87c4f;
-            letter-spacing: 1px;
-        }
-        .simple-meaning {
-            background: #f5efe8;
-            padding: 14px 18px;
-            border-radius: 32px;
-            margin: 24px 0;
-            text-align: center;
-            font-weight: 500;
-            color: #3a5a3a;
-        }
-        .example-box {
-            background: #faf7f2;
-            padding: 16px;
-            border-radius: 24px;
-            margin-top: 20px;
-            border-left: 4px solid #c9aa7b;
-        }
-        .example-ch {
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-        }
-        .example-en {
-            font-size: 0.8rem;
-            color: #8f7358;
+            letter-spacing: 2px;
         }
 
-        /* page 2 - character breakdown */
+        /* page 2 */
         .char-grid {
             display: flex;
             flex-direction: column;
@@ -145,101 +130,88 @@
             font-size: 0.9rem;
             color: #5c4b38;
         }
-        .extra-example {
+        .meaning-summary {
             margin-top: 20px;
             background: #efe7dd;
             border-radius: 20px;
             padding: 14px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
-        /* page 3 - quiz */
+        /* page 3 quiz */
         .quiz-scenario {
             background: #f5efe8;
             border-radius: 24px;
             padding: 18px;
-            margin-bottom: 24px;
-            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .scenario-text {
+            margin-bottom: 12px;
             line-height: 1.4;
         }
         .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin: 10px 0 20px;
+            gap: 8px;
         }
         .quiz-choice {
             background: white;
             border: 1.5px solid #e3d8ce;
             border-radius: 60px;
-            padding: 12px 18px;
+            padding: 10px 16px;
             cursor: pointer;
-            transition: 0.1s;
-            font-weight: 500;
+            font-size: 0.9rem;
         }
         .quiz-choice.selected {
             background: #e0cfbc;
             border-color: #b2824a;
         }
-        .quiz-choice.correct-feedback {
+        .quiz-choice.correct-highlight {
             background: #c8e0c8;
             border-color: #4a7c4a;
         }
-        .quiz-choice.wrong-feedback {
+        .quiz-choice.wrong-highlight {
             background: #f0d8d8;
             border-color: #c97a7a;
         }
         .feedback-msg {
-            margin: 12px 0;
+            margin-top: 10px;
             font-weight: 500;
+            font-size: 0.85rem;
         }
         button {
             background: #e0cfbc;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 8px;
         }
         button:active {
             transform: scale(0.97);
         }
 
-        /* navigation arrows */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
             padding: 16px 24px 24px 24px;
             border-top: 1px solid #efe5db;
             background: white;
+            gap: 10px;
         }
         .nav-arrow {
             background: #f0e8df;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 60px;
-            font-weight: 600;
+            font-weight: 500;
             color: #5c4b38;
-            min-width: 100px;
+            flex: 1;
             text-align: center;
-        }
-        .nav-arrow.disabled {
-            opacity: 0.4;
-            pointer-events: none;
         }
         .next-day-btn {
             background: #c9aa7b;
             color: white;
-            margin-left: auto;
-        }
-
-        .reset-small {
-            background: transparent;
-            border: 1px solid #ddd0c0;
-            padding: 6px 12px;
-            font-size: 0.7rem;
-            margin-top: 0;
+            flex: 1;
         }
         footer {
             font-size: 0.65rem;
@@ -251,48 +223,40 @@
     </style>
 </head>
 <body>
-<div class="card" id="app">
+<div class="card">
     <div class="header">
         <div class="day-badge" id="dayCounter">第 1 天</div>
         <div class="page-indicator" id="pageIndicator">① 成语</div>
         <button id="resetBtn" class="reset-small">↺ 重置</button>
     </div>
 
-    <div class="page-content" id="pageContent">
-        <!-- dynamic content based on page -->
-    </div>
+    <div class="page-content" id="pageContent"></div>
 
     <div class="nav-buttons">
         <button class="nav-arrow" id="prevPageBtn">← 上一页</button>
         <button class="nav-arrow" id="nextPageBtn">下一页 →</button>
-        <button class="nav-arrow next-day-btn" id="nextDayBtn">✨ 下一天</button>
+        <button class="next-day-btn" id="nextDayBtn">✨ 下一天</button>
     </div>
-    <footer>每成语3页 · 第3页测试理解</footer>
+    <footer>① 成语 ② 逐字解义 ③ 场景测验</footer>
 </div>
 
 <script>
-    // ----- enriched chengyu data with ENGLISH equivalents where meaning truly matches -----
     const CHENGYU_SET = [
         {
             chengyu: "画蛇添足",
             pinyin: "huà shé tiān zú",
             literalTranslation: "Draw a snake, add feet",
             simpleMeaning: "To overdo something and ruin it",
-            englishEquivalent: "To gild the lily",
             breakdown: [
                 { char: "画", pinyin: "huà", english: "to draw/paint" },
                 { char: "蛇", pinyin: "shé", english: "snake" },
                 { char: "添", pinyin: "tiān", english: "to add" },
                 { char: "足", pinyin: "zú", english: "foot/feet" }
             ],
-            example1: "他给完美的画又加了几笔，真是画蛇添足。",
-            example1en: "He added more strokes to the perfect painting — truly gilding the lily.",
-            example2: "写文章不用啰嗦，避免画蛇添足。",
-            example2en: "Keep writing concise; avoid adding unnecessary fluff.",
             scenarios: [
                 { text: "一个产品本来已经很好了，团队非要加很多没用的功能，结果用户体验变差。", correct: "画蛇添足" },
                 { text: "他本来演讲已经很完美了，却额外加了一堆笑话，反而冷场了。", correct: "画蛇添足" },
-                { text: "她认真准备了考试，最后取得了好成绩。", correct: "画蛇添足" } // distractor
+                { text: "她认真准备了考试，最后取得了好成绩。", correct: "画蛇添足" }
             ]
         },
         {
@@ -300,17 +264,12 @@
             pinyin: "duì niú tán qín",
             literalTranslation: "To play the lute to a cow",
             simpleMeaning: "Talking to someone who doesn't understand",
-            englishEquivalent: "Casting pearls before swine",
             breakdown: [
                 { char: "对", pinyin: "duì", english: "to/towards" },
                 { char: "牛", pinyin: "niú", english: "cow/ox" },
                 { char: "弹", pinyin: "tán", english: "to play (instrument)" },
                 { char: "琴", pinyin: "qín", english: "string instrument" }
             ],
-            example1: "跟他解释量子物理简直是对牛弹琴。",
-            example1en: "Explaining quantum physics to him is like casting pearls before swine.",
-            example2: "别对牛弹琴了，他根本不懂艺术。",
-            example2en: "Don't play the lute to a cow — he doesn't understand art.",
             scenarios: [
                 { text: "你给一个从不看书的人讲文学理论，讲了半天他毫无反应。", correct: "对牛弹琴" },
                 { text: "老师向认真学习的学生讲解难题，学生很快理解了。", correct: "对牛弹琴" },
@@ -322,17 +281,12 @@
             pinyin: "shǒu zhū dài tù",
             literalTranslation: "Guard the stump, wait for rabbits",
             simpleMeaning: "Waiting for luck instead of working",
-            englishEquivalent: "Sit and wait for something that won't happen again",
             breakdown: [
                 { char: "守", pinyin: "shǒu", english: "to guard/wait" },
                 { char: "株", pinyin: "zhū", english: "tree stump" },
                 { char: "待", pinyin: "dài", english: "to wait for" },
                 { char: "兔", pinyin: "tù", english: "rabbit" }
             ],
-            example1: "不要守株待兔，要主动去寻找机会。",
-            example1en: "Don't wait for luck; go find opportunities.",
-            example2: "他每天坐在家里等中彩票，简直是守株待兔。",
-            example2en: "He sits home waiting to win the lottery — just guarding the stump.",
             scenarios: [
                 { text: "他上次靠运气通过考试，这次又不好好复习，指望再走运。", correct: "守株待兔" },
                 { text: "农民每天勤奋种地，秋天丰收了。", correct: "守株待兔" },
@@ -344,17 +298,12 @@
             pinyin: "jǐng dǐ zhī wā",
             literalTranslation: "Frog at the bottom of a well",
             simpleMeaning: "Narrow-minded, lacking perspective",
-            englishEquivalent: "A person with a limited outlook",
             breakdown: [
                 { char: "井", pinyin: "jǐng", english: "well" },
                 { char: "底", pinyin: "dǐ", english: "bottom" },
                 { char: "之", pinyin: "zhī", english: "of/'s" },
                 { char: "蛙", pinyin: "wā", english: "frog" }
             ],
-            example1: "多出去看看世界，别做井底之蛙。",
-            example1en: "See more of the world; don't be a frog in a well.",
-            example2: "他从不读书也不旅行，真是井底之蛙。",
-            example2en: "He never reads nor travels — truly a frog at the bottom of a well.",
             scenarios: [
                 { text: "某人认为自己的小城市就是全世界最好的地方，从没见过其他地方。", correct: "井底之蛙" },
                 { text: "一位环球旅行家分享各地文化，大家都很受益。", correct: "井底之蛙" },
@@ -366,16 +315,11 @@
             pinyin: "wèi yǔ chóu móu",
             literalTranslation: "Before rain, bind (the windows)",
             simpleMeaning: "Prepare in advance",
-            englishEquivalent: "Save for a rainy day",
             breakdown: [
                 { char: "未", pinyin: "wèi", english: "not yet" },
                 { char: "雨", pinyin: "yǔ", english: "rain" },
                 { char: "绸缪", pinyin: "chóu móu", english: "to bind/tie up (prepare)" }
             ],
-            example1: "存钱就是为了未雨绸缪。",
-            example1en: "Saving money is to save for a rainy day.",
-            example2: "提前买保险是未雨绸缪的好习惯。",
-            example2en: "Buying insurance early is a good habit of preparing ahead.",
             scenarios: [
                 { text: "他每个月存一部分工资，以防将来生病或失业。", correct: "未雨绸缪" },
                 { text: "台风要来之前，他家提前加固了窗户。", correct: "未雨绸缪" },
@@ -385,11 +329,9 @@
     ];
 
     let currentDay = 0;
-    let currentPage = 0;   // 0, 1, 2
-    let quizAnswers = [];   // store user selections for scenarios
-    let quizFeedback = [];
+    let currentPage = 0;
+    let quizAnswers = [];
 
-    // Storage
     const DAY_KEY = "chengyu3_day";
     const DATE_KEY = "chengyu3_date";
 
@@ -424,24 +366,11 @@
         const pageIndicator = document.getElementById("pageIndicator");
         
         if (currentPage === 0) {
-            pageIndicator.innerText = "① 成语 + 例句";
+            pageIndicator.innerText = "① 成语";
             container.innerHTML = `
-                <div class="chengyu-large">
+                <div class="page1-center">
                     <div class="chengyu-characters">${c.chengyu}</div>
                     <div class="pinyin">${c.pinyin}</div>
-                </div>
-                <div class="simple-meaning">
-                    🧠 ${c.simpleMeaning}<br>
-                    <span style="font-size:0.85rem;">📖 字面: ${c.literalTranslation}</span><br>
-                    <span style="font-size:0.85rem;">🏴 近似: ${c.englishEquivalent}</span>
-                </div>
-                <div class="example-box">
-                    <div class="example-ch">📌 ${c.example1}</div>
-                    <div class="example-en">${c.example1en}</div>
-                </div>
-                <div class="example-box" style="margin-top:12px;">
-                    <div class="example-ch">✍️ ${c.example2}</div>
-                    <div class="example-en">${c.example2en}</div>
                 </div>
             `;
         } 
@@ -458,66 +387,62 @@
                 `;
             });
             charsHtml += `</div>`;
-            charsHtml += `<div class="extra-example">
-                            🔍 完整字面意思: “${c.literalTranslation}”<br>
-                            🎯 整体比喻: ${c.simpleMeaning}
+            charsHtml += `<div class="meaning-summary">
+                            📖 字面: “${c.literalTranslation}”<br>
+                            🎯 比喻: ${c.simpleMeaning}
                         </div>`;
             container.innerHTML = charsHtml;
         } 
-        else if (currentPage === 2) {
+        else {
             pageIndicator.innerText = "③ 场景测验";
-            // init quiz state if needed
             if (quizAnswers.length !== c.scenarios.length) {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
-                quizFeedback = new Array(c.scenarios.length).fill(false);
             }
-            let quizHtml = `<div style="margin-bottom:8px;"><strong>📋 哪个场景最适合用 “${c.chengyu}”？</strong></div>`;
+            let quizHtml = `<div style="margin-bottom:12px;"><strong>📋 哪个场景最适合用 “${c.chengyu}”？</strong></div>`;
             c.scenarios.forEach((scenario, idx) => {
-                let isAnswered = quizAnswers[idx] !== null;
-                let selectedChoice = quizAnswers[idx];
-                let isCorrect = isAnswered && (selectedChoice === scenario.correct);
-                quizHtml += `<div class="quiz-scenario">
-                                <div>📖 ${scenario.text}</div>
-                                <div class="quiz-options" data-scenario="${idx}">`;
-                // options: three possibilities: the correct chengyu, and two others (distractors)
+                let selected = quizAnswers[idx];
                 let otherChengyus = CHENGYU_SET.filter((_, i) => i !== currentDay).map(c => c.chengyu).slice(0,2);
                 while(otherChengyus.length < 2) otherChengyus.push("一心一意");
                 let options = [c.chengyu, ...otherChengyus].sort(() => Math.random() - 0.5);
+                
+                quizHtml += `<div class="quiz-scenario" data-idx="${idx}">
+                                <div class="scenario-text">📖 ${scenario.text}</div>
+                                <div class="quiz-options">`;
                 options.forEach(opt => {
-                    let isSelected = (selectedChoice === opt);
-                    let feedbackClass = "";
-                    if (isAnswered && isCorrect && opt === scenario.correct) feedbackClass = "correct-feedback";
-                    if (isAnswered && !isCorrect && isSelected) feedbackClass = "wrong-feedback";
-                    quizHtml += `<div class="quiz-choice ${isSelected ? 'selected' : ''} ${feedbackClass}" data-opt="${opt}">${opt}</div>`;
+                    let isSelected = (selected === opt);
+                    let extraClass = "";
+                    if (selected !== null) {
+                        if (opt === scenario.correct) extraClass = "correct-highlight";
+                        if (selected === opt && opt !== scenario.correct) extraClass = "wrong-highlight";
+                    }
+                    quizHtml += `<div class="quiz-choice ${isSelected ? 'selected' : ''} ${extraClass}" data-opt="${opt}">${opt}</div>`;
                 });
                 quizHtml += `</div>`;
-                if (isAnswered) {
-                    if (isCorrect) quizHtml += `<div class="feedback-msg" style="color:#2a6b3c;">✅ 正确！</div>`;
-                    else quizHtml += `<div class="feedback-msg" style="color:#b13e3e;">❌ 正确答案是: ${scenario.correct}</div>`;
+                if (selected !== null) {
+                    if (selected === scenario.correct) quizHtml += `<div class="feedback-msg" style="color:#2a6b3c;">✅ 正确</div>`;
+                    else quizHtml += `<div class="feedback-msg" style="color:#b13e3e;">❌ 正确答案: ${scenario.correct}</div>`;
                 }
                 quizHtml += `</div>`;
             });
             let allAnswered = quizAnswers.every(a => a !== null);
             if (allAnswered) {
-                quizHtml += `<button id="resetQuizBtn">🔄 重做本页测验</button>`;
+                quizHtml += `<button id="resetQuizBtn" style="margin-top:8px;">🔄 重做测验</button>`;
             }
             container.innerHTML = quizHtml;
-            // attach event listeners
+            
             document.querySelectorAll('.quiz-choice').forEach(el => {
                 el.addEventListener('click', (e) => {
-                    let parentDiv = el.closest('.quiz-scenario');
-                    let scenarioDiv = parentDiv.querySelector('.quiz-options');
-                    let scenarioIdx = parseInt(scenarioDiv.dataset.scenario);
+                    let scenarioDiv = el.closest('.quiz-scenario');
+                    let idx = parseInt(scenarioDiv.dataset.idx);
+                    if (quizAnswers[idx] !== null) return;
                     let selectedOpt = el.dataset.opt;
-                    if (quizAnswers[scenarioIdx] !== null) return; // already answered
-                    quizAnswers[scenarioIdx] = selectedOpt;
-                    renderPage(); // re-render to lock
+                    quizAnswers[idx] = selectedOpt;
+                    renderPage();
                 });
             });
-            const resetQuiz = document.getElementById("resetQuizBtn");
-            if (resetQuiz) resetQuiz.onclick = () => {
+            const resetBtn = document.getElementById("resetQuizBtn");
+            if (resetBtn) resetBtn.onclick = () => {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
-                quizFeedback = new Array(c.scenarios.length).fill(false);
                 renderPage();
             };
         }
@@ -528,20 +453,8 @@
         renderPage();
     }
 
-    function nextPage() {
-        if (currentPage < 2) {
-            currentPage++;
-            renderPage();
-        }
-    }
-
-    function prevPage() {
-        if (currentPage > 0) {
-            currentPage--;
-            renderPage();
-        }
-    }
-
+    function nextPage() { if (currentPage < 2) { currentPage++; renderPage(); } }
+    function prevPage() { if (currentPage > 0) { currentPage--; renderPage(); } }
     function nextDay() {
         let newDay = (currentDay + 1) % CHENGYU_SET.length;
         currentDay = newDay;
@@ -551,7 +464,6 @@
         quizAnswers = [];
         refreshAll();
     }
-
     function resetProgress() {
         currentDay = 0;
         localStorage.setItem(DAY_KEY, "0");

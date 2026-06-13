@@ -34,29 +34,6 @@
             flex-direction: column;
         }
 
-        /* header - only reset button */
-        .header {
-            display: flex;
-            justify-content: flex-end;
-            padding: 20px 24px 0 24px;
-        }
-        .icon-btn-sm {
-            background: #f0e8df;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 44px;
-            font-size: 1.4rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .icon-btn-sm:active {
-            transform: scale(0.95);
-            background: #e0d5c8;
-        }
-
         /* main content area */
         .page-content {
             flex: 1;
@@ -92,36 +69,51 @@
             font-weight: 500;
         }
 
-        /* page 2 - with chengyu header */
+        /* page 2 - meaning first, then characters */
         .page2-header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             padding-bottom: 16px;
             border-bottom: 2px solid #efe5db;
         }
         .page2-chengyu {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 600;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             color: #2c241a;
             font-family: 'Noto Serif SC', 'KaiTi', serif;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             white-space: nowrap;
         }
         .page2-pinyin {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #b87c4f;
+        }
+        .meaning-first {
+            background: #efe7dd;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .literal-meaning {
+            font-size: 0.9rem;
+            color: #5c4b38;
+            margin-bottom: 8px;
+        }
+        .simple-meaning {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c4b2c;
         }
         .char-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
         }
         .char-row {
             background: #faf7f2;
-            border-radius: 24px;
-            padding: 14px 18px;
+            border-radius: 20px;
+            padding: 12px 16px;
             display: flex;
             align-items: baseline;
             flex-wrap: wrap;
@@ -129,41 +121,38 @@
             border: 1px solid #ede3d7;
         }
         .char-big {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 600;
             font-family: 'Noto Serif SC', serif;
-            min-width: 56px;
+            min-width: 52px;
             color: #2c241a;
         }
         .char-pinyin {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #b87c4f;
-            min-width: 65px;
+            min-width: 60px;
             font-weight: 500;
         }
         .char-translation {
             flex: 1;
-            font-size: 0.9rem;
-            color: #5c4b38;
-        }
-        .meaning-summary {
-            background: #efe7dd;
-            border-radius: 20px;
-            padding: 14px;
             font-size: 0.85rem;
-            line-height: 1.4;
+            color: #5c4b38;
         }
 
         /* page 3 quiz */
         .quiz-header {
             margin-bottom: 20px;
+            text-align: center;
         }
         .quiz-header-chengyu {
             font-size: 1.6rem;
             font-weight: 600;
             color: #2c241a;
-            text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
+        }
+        .quiz-header-pinyin {
+            font-size: 0.8rem;
+            color: #b87c4f;
         }
         .quiz-scenario {
             background: #f5efe8;
@@ -224,7 +213,7 @@
             transform: scale(0.97);
         }
 
-        /* bottom navigation - big icon buttons */
+        /* bottom navigation - two buttons (prev + next/skip) */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
@@ -254,6 +243,24 @@
             color: white;
             flex: 1;
         }
+        .reset-bottom {
+            background: #e0cfbc;
+            border: none;
+            border-radius: 60px;
+            padding: 18px 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        .reset-bottom:active {
+            transform: scale(0.96);
+            background: #d0c0ab;
+        }
 
         /* responsive for very small phones */
         @media (max-width: 400px) {
@@ -262,7 +269,7 @@
                 letter-spacing: 1px;
             }
             .page2-chengyu {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
                 letter-spacing: 2px;
             }
         }
@@ -270,16 +277,10 @@
 </head>
 <body>
 <div class="card">
-    <div class="header">
-        <button id="resetBtn" class="icon-btn-sm">↺</button>
-    </div>
-
     <div class="page-content" id="pageContent"></div>
 
-    <div class="nav-buttons">
-        <button class="nav-btn" id="prevPageBtn">←</button>
-        <button class="nav-btn" id="nextPageBtn">→</button>
-        <button class="nav-btn next-day-btn" id="nextDayBtn">✨</button>
+    <div class="nav-buttons" id="navButtons">
+        <!-- dynamic buttons based on page -->
     </div>
 </div>
 
@@ -417,38 +418,36 @@
             `;
         } 
         else if (currentPage === 1) {
-            // Page 2: Chengyu header + character breakdown + meaning
-            let charsHtml = `
+            // Page 2: MEANINGS FIRST, then character breakdown
+            container.innerHTML = `
                 <div class="page2-header">
                     <div class="page2-chengyu">${c.chengyu}</div>
                     <div class="page2-pinyin">${c.pinyin}</div>
                 </div>
+                <div class="meaning-first">
+                    <div class="literal-meaning">📖 字面: ${c.literalTranslation}</div>
+                    <div class="simple-meaning">🎯 比喻: ${c.simpleMeaning}</div>
+                </div>
                 <div class="char-grid">
+                    ${c.breakdown.map(item => `
+                        <div class="char-row">
+                            <span class="char-big">${item.char}</span>
+                            <span class="char-pinyin">${item.pinyin}</span>
+                            <span class="char-translation">${item.english}</span>
+                        </div>
+                    `).join('')}
+                </div>
             `;
-            c.breakdown.forEach(item => {
-                charsHtml += `
-                    <div class="char-row">
-                        <span class="char-big">${item.char}</span>
-                        <span class="char-pinyin">${item.pinyin}</span>
-                        <span class="char-translation">${item.english}</span>
-                    </div>
-                `;
-            });
-            charsHtml += `</div>`;
-            charsHtml += `<div class="meaning-summary">
-                            📖 ${c.literalTranslation}<br>
-                            🎯 ${c.simpleMeaning}
-                        </div>`;
-            container.innerHTML = charsHtml;
         } 
         else {
-            // Page 3: Quiz with chengyu header
+            // Page 3: Quiz
             if (quizAnswers.length !== c.scenarios.length) {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
             }
             let quizHtml = `
                 <div class="quiz-header">
-                    <div class="quiz-header-chengyu">📖 ${c.chengyu}</div>
+                    <div class="quiz-header-chengyu">${c.chengyu}</div>
+                    <div class="quiz-header-pinyin">${c.pinyin}</div>
                 </div>
             `;
             c.scenarios.forEach((scenario, idx) => {
@@ -498,14 +497,51 @@
                 renderPage();
             };
         }
+        
+        renderNavButtons();
     }
 
-    function refreshAll() {
-        renderPage();
+    function renderNavButtons() {
+        const navContainer = document.getElementById("navButtons");
+        
+        if (currentPage === 2) {
+            // Page 3: No forward arrow, only prev + reset + next day
+            navContainer.innerHTML = `
+                <button class="nav-btn" id="prevPageBtn">←</button>
+                <button class="reset-bottom" id="resetBottomBtn">↺ 重置</button>
+                <button class="next-day-btn" id="nextDayBtn">⏭ 下一天</button>
+            `;
+        } else {
+            // Page 1 or 2: prev + next + reset + next day (but reset at bottom)
+            navContainer.innerHTML = `
+                <button class="nav-btn" id="prevPageBtn">←</button>
+                <button class="nav-btn" id="nextPageBtn">→</button>
+                <button class="reset-bottom" id="resetBottomBtn">↺ 重置</button>
+                <button class="next-day-btn" id="nextDayBtn">⏭ 下一天</button>
+            `;
+        }
+        
+        // Re-attach event listeners
+        document.getElementById("prevPageBtn")?.addEventListener("click", prevPage);
+        document.getElementById("nextPageBtn")?.addEventListener("click", nextPage);
+        document.getElementById("resetBottomBtn")?.addEventListener("click", resetProgress);
+        document.getElementById("nextDayBtn")?.addEventListener("click", nextDay);
     }
 
-    function nextPage() { if (currentPage < 2) { currentPage++; renderPage(); } }
-    function prevPage() { if (currentPage > 0) { currentPage--; renderPage(); } }
+    function nextPage() { 
+        if (currentPage < 2) { 
+            currentPage++; 
+            renderPage(); 
+        } 
+    }
+    
+    function prevPage() { 
+        if (currentPage > 0) { 
+            currentPage--; 
+            renderPage(); 
+        } 
+    }
+    
     function nextDay() {
         let newDay = (currentDay + 1) % CHENGYU_SET.length;
         currentDay = newDay;
@@ -513,24 +549,20 @@
         localStorage.setItem(DATE_KEY, getToday());
         currentPage = 0;
         quizAnswers = [];
-        refreshAll();
+        renderPage();
     }
+    
     function resetProgress() {
         currentDay = 0;
         localStorage.setItem(DAY_KEY, "0");
         localStorage.setItem(DATE_KEY, getToday());
         currentPage = 0;
         quizAnswers = [];
-        refreshAll();
+        renderPage();
     }
 
     loadProgress();
-    refreshAll();
-
-    document.getElementById("prevPageBtn").onclick = prevPage;
-    document.getElementById("nextPageBtn").onclick = nextPage;
-    document.getElementById("nextDayBtn").onclick = nextDay;
-    document.getElementById("resetBtn").onclick = resetProgress;
+    renderPage();
 </script>
 </body>
 </html>

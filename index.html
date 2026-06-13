@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>每日成语 · 三页通</title>
+    <title>每日成语</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
         }
 
         body {
@@ -22,60 +23,51 @@
         }
 
         .card {
-            max-width: 550px;
+            max-width: 600px;
             width: 100%;
             background: white;
-            border-radius: 48px;
-            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+            border-radius: 56px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-            min-height: 550px;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
         }
 
+        /* header - only reset button, no counters */
         .header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px 8px 24px;
-            border-bottom: 1px solid #efe5db;
+            justify-content: flex-end;
+            padding: 20px 24px 0 24px;
         }
-        .day-badge {
-            background: #e9e2d8;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #5c4b38;
-        }
-        .page-indicator {
-            font-size: 0.8rem;
-            color: #b78f64;
-            font-weight: 500;
-            background: #f7f2eb;
-            padding: 6px 14px;
-            border-radius: 40px;
-        }
-        .reset-small {
-            background: transparent;
-            border: 1px solid #ddd0c0;
-            padding: 6px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
+        .icon-btn-sm {
+            background: #f0e8df;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 44px;
+            font-size: 1.4rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-btn-sm:active {
+            transform: scale(0.95);
+            background: #e0d5c8;
         }
 
+        /* main content area */
         .page-content {
             flex: 1;
-            padding: 32px 24px;
-            min-height: 420px;
+            padding: 40px 28px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
         }
 
         /* page 1 - minimal */
         .page1-center {
-            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -83,84 +75,90 @@
             text-align: center;
         }
         .chengyu-characters {
-            font-size: 4.5rem;
+            font-size: 4.8rem;
             font-weight: 700;
-            letter-spacing: 12px;
+            letter-spacing: 14px;
             color: #2c241a;
             font-family: 'Noto Serif SC', 'KaiTi', serif;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            line-height: 1.3;
         }
         .pinyin {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: #b87c4f;
             letter-spacing: 2px;
+            font-weight: 500;
         }
 
         /* page 2 */
         .char-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 14px;
         }
         .char-row {
             background: #faf7f2;
-            border-radius: 20px;
-            padding: 14px 18px;
+            border-radius: 28px;
+            padding: 16px 20px;
             display: flex;
             align-items: baseline;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             border: 1px solid #ede3d7;
         }
         .char-big {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
             font-family: 'Noto Serif SC', serif;
-            min-width: 56px;
+            min-width: 60px;
             color: #2c241a;
         }
         .char-pinyin {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #b87c4f;
-            min-width: 65px;
+            min-width: 70px;
+            font-weight: 500;
         }
         .char-translation {
             flex: 1;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #5c4b38;
         }
         .meaning-summary {
-            margin-top: 20px;
+            margin-top: 24px;
             background: #efe7dd;
-            border-radius: 20px;
-            padding: 14px;
+            border-radius: 24px;
+            padding: 16px;
             font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         /* page 3 quiz */
         .quiz-scenario {
             background: #f5efe8;
-            border-radius: 24px;
-            padding: 18px;
+            border-radius: 28px;
+            padding: 20px;
             margin-bottom: 20px;
         }
         .scenario-text {
-            margin-bottom: 12px;
-            line-height: 1.4;
+            margin-bottom: 14px;
+            line-height: 1.45;
+            font-size: 0.95rem;
         }
         .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
         .quiz-choice {
             background: white;
             border: 1.5px solid #e3d8ce;
             border-radius: 60px;
-            padding: 10px 16px;
+            padding: 12px 18px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
         }
         .quiz-choice.selected {
             background: #e0cfbc;
@@ -175,69 +173,72 @@
             border-color: #c97a7a;
         }
         .feedback-msg {
-            margin-top: 10px;
+            margin-top: 12px;
             font-weight: 500;
             font-size: 0.85rem;
+            text-align: center;
         }
-        button {
+        .reset-quiz-btn {
             background: #e0cfbc;
             border: none;
-            padding: 10px 18px;
+            padding: 12px 20px;
             border-radius: 60px;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
         }
-        button:active {
+        .reset-quiz-btn:active {
             transform: scale(0.97);
         }
 
+        /* bottom navigation - big icon only buttons */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
-            padding: 16px 24px 24px 24px;
+            gap: 16px;
+            padding: 20px 24px 28px 24px;
             border-top: 1px solid #efe5db;
             background: white;
-            gap: 10px;
         }
-        .nav-arrow {
+        .nav-btn {
             background: #f0e8df;
-            padding: 10px 20px;
+            border: none;
             border-radius: 60px;
-            font-weight: 500;
-            color: #5c4b38;
+            padding: 18px 0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
             flex: 1;
-            text-align: center;
+        }
+        .nav-btn:active {
+            transform: scale(0.96);
+            background: #e0d5c8;
         }
         .next-day-btn {
             background: #c9aa7b;
             color: white;
             flex: 1;
         }
-        footer {
-            font-size: 0.65rem;
-            text-align: center;
-            padding: 12px;
-            color: #bcab98;
-            border-top: 1px solid #efe5db;
-        }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="header">
-        <div class="day-badge" id="dayCounter">第 1 天</div>
-        <div class="page-indicator" id="pageIndicator">① 成语</div>
-        <button id="resetBtn" class="reset-small">↺ 重置</button>
+        <button id="resetBtn" class="icon-btn-sm">↺</button>
     </div>
 
     <div class="page-content" id="pageContent"></div>
 
     <div class="nav-buttons">
-        <button class="nav-arrow" id="prevPageBtn">← 上一页</button>
-        <button class="nav-arrow" id="nextPageBtn">下一页 →</button>
-        <button class="next-day-btn" id="nextDayBtn">✨ 下一天</button>
+        <button class="nav-btn" id="prevPageBtn">←</button>
+        <button class="nav-btn" id="nextPageBtn">→</button>
+        <button class="nav-btn next-day-btn" id="nextDayBtn">✨</button>
     </div>
-    <footer>① 成语 ② 逐字解义 ③ 场景测验</footer>
 </div>
 
 <script>
@@ -318,7 +319,7 @@
             breakdown: [
                 { char: "未", pinyin: "wèi", english: "not yet" },
                 { char: "雨", pinyin: "yǔ", english: "rain" },
-                { char: "绸缪", pinyin: "chóu móu", english: "to bind/tie up (prepare)" }
+                { char: "绸缪", pinyin: "chóu móu", english: "to bind/tie up" }
             ],
             scenarios: [
                 { text: "他每个月存一部分工资，以防将来生病或失业。", correct: "未雨绸缪" },
@@ -363,10 +364,8 @@
     function renderPage() {
         const c = CHENGYU_SET[currentDay];
         const container = document.getElementById("pageContent");
-        const pageIndicator = document.getElementById("pageIndicator");
         
         if (currentPage === 0) {
-            pageIndicator.innerText = "① 成语";
             container.innerHTML = `
                 <div class="page1-center">
                     <div class="chengyu-characters">${c.chengyu}</div>
@@ -375,7 +374,6 @@
             `;
         } 
         else if (currentPage === 1) {
-            pageIndicator.innerText = "② 逐字解义";
             let charsHtml = `<div class="char-grid">`;
             c.breakdown.forEach(item => {
                 charsHtml += `
@@ -388,17 +386,16 @@
             });
             charsHtml += `</div>`;
             charsHtml += `<div class="meaning-summary">
-                            📖 字面: “${c.literalTranslation}”<br>
-                            🎯 比喻: ${c.simpleMeaning}
+                            📖 ${c.literalTranslation}<br>
+                            🎯 ${c.simpleMeaning}
                         </div>`;
             container.innerHTML = charsHtml;
         } 
         else {
-            pageIndicator.innerText = "③ 场景测验";
             if (quizAnswers.length !== c.scenarios.length) {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
             }
-            let quizHtml = `<div style="margin-bottom:12px;"><strong>📋 哪个场景最适合用 “${c.chengyu}”？</strong></div>`;
+            let quizHtml = `<div style="margin-bottom:16px; font-weight:600; font-size:1rem;">📋 哪个场景最适合?</div>`;
             c.scenarios.forEach((scenario, idx) => {
                 let selected = quizAnswers[idx];
                 let otherChengyus = CHENGYU_SET.filter((_, i) => i !== currentDay).map(c => c.chengyu).slice(0,2);
@@ -419,14 +416,14 @@
                 });
                 quizHtml += `</div>`;
                 if (selected !== null) {
-                    if (selected === scenario.correct) quizHtml += `<div class="feedback-msg" style="color:#2a6b3c;">✅ 正确</div>`;
-                    else quizHtml += `<div class="feedback-msg" style="color:#b13e3e;">❌ 正确答案: ${scenario.correct}</div>`;
+                    if (selected === scenario.correct) quizHtml += `<div class="feedback-msg" style="color:#2a6b3c;">✓ 正确</div>`;
+                    else quizHtml += `<div class="feedback-msg" style="color:#b13e3e;">✗ 正确答案: ${scenario.correct}</div>`;
                 }
                 quizHtml += `</div>`;
             });
             let allAnswered = quizAnswers.every(a => a !== null);
             if (allAnswered) {
-                quizHtml += `<button id="resetQuizBtn" style="margin-top:8px;">🔄 重做测验</button>`;
+                quizHtml += `<button class="reset-quiz-btn" id="resetQuizBtn">⟳ 重做</button>`;
             }
             container.innerHTML = quizHtml;
             
@@ -449,7 +446,6 @@
     }
 
     function refreshAll() {
-        document.getElementById("dayCounter").innerText = `第 ${currentDay+1} 天`;
         renderPage();
     }
 

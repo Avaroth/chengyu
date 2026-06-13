@@ -35,14 +35,14 @@
             flex-direction: column;
         }
 
-        /* progress header */
+        /* progress header - compact */
         .progress-header {
-            padding: 16px 20px 8px 20px;
+            padding: 12px 20px;
             background: white;
             border-bottom: 1px solid #f0dfd2;
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
             flex-shrink: 0;
         }
         .progress-text {
@@ -51,16 +51,12 @@
             font-weight: 500;
         }
         .completed-badge {
-            background: #e8d5c4;
-            color: #8b3a2a;
+            background: #c8dcc8;
+            color: #4a6a3a;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 600;
-        }
-        .completed-badge.completed {
-            background: #c8dcc8;
-            color: #4a6a3a;
         }
 
         .page-content {
@@ -89,7 +85,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0;
         }
         .chengyu-characters {
             font-size: 3.2rem;
@@ -110,10 +106,10 @@
         }
         .completed-check {
             margin-top: 24px;
-            font-size: 0.9rem;
-            color: #8b3a2a;
-            background: #f0e8df;
-            padding: 8px 16px;
+            font-size: 0.85rem;
+            color: #4a6a3a;
+            background: #e0ebd8;
+            padding: 6px 14px;
             border-radius: 40px;
             display: inline-block;
         }
@@ -352,6 +348,9 @@
                 font-size: 1.4rem;
                 padding: 10px 0;
             }
+            .progress-header {
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -359,7 +358,7 @@
 <div class="card">
     <div class="progress-header">
         <span class="progress-text" id="progressCounter">加载中...</span>
-        <span class="completed-badge" id="completedBadge"></span>
+        <span class="completed-badge" id="completedBadge" style="display: none;"></span>
     </div>
 
     <div class="page-content" id="pageContent"></div>
@@ -382,7 +381,6 @@
     let currentPage = 0;
     let quizAnswers = [];
     
-    // Track completed chengyu (all 3 quiz answers correct)
     let completedChengyu = new Array(CHENGYU_SET.length).fill(false);
 
     const DAY_KEY = "chengyu3_position";
@@ -410,12 +408,10 @@
         let savedCompleted = localStorage.getItem(COMPLETED_KEY);
         let today = getToday();
         
-        // Load completed chengyu
         if (savedCompleted) {
             completedChengyu = JSON.parse(savedCompleted);
         }
         
-        // Initialize or retrieve shuffled order
         if (!savedShuffle) {
             shuffledIndices = [...Array(CHENGYU_SET.length).keys()];
             shuffledIndices = shuffleArray(shuffledIndices);
@@ -466,10 +462,9 @@
         const badge = document.getElementById("completedBadge");
         if (completedChengyu[currentDay]) {
             badge.innerHTML = "✓ 已完成";
-            badge.classList.add("completed");
+            badge.style.display = "inline-block";
         } else {
-            badge.innerHTML = "📖 未完成";
-            badge.classList.remove("completed");
+            badge.style.display = "none";
         }
     }
 
@@ -547,7 +542,6 @@
                 const justCompleted = checkAndMarkCompleted();
                 if (justCompleted) {
                     updateProgressUI();
-                    // Re-render to show completion message
                     renderPage();
                     return;
                 }
@@ -616,7 +610,6 @@
     }
     
     function resetProgress() {
-        // Reshuffle everything and reset all progress
         shuffledIndices = [...Array(CHENGYU_SET.length).keys()];
         shuffledIndices = shuffleArray(shuffledIndices);
         localStorage.setItem(SHUFFLE_KEY, JSON.stringify(shuffledIndices));

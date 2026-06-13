@@ -34,7 +34,7 @@
             flex-direction: column;
         }
 
-        /* header - only reset button, no counters */
+        /* header - only reset button */
         .header {
             display: flex;
             justify-content: flex-end;
@@ -60,14 +60,14 @@
         /* main content area */
         .page-content {
             flex: 1;
-            padding: 40px 28px;
+            padding: 32px 24px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
 
         /* page 1 - minimal */
         .page1-center {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -75,88 +75,119 @@
             text-align: center;
         }
         .chengyu-characters {
-            font-size: 4.8rem;
+            font-size: 3.2rem;
             font-weight: 700;
-            letter-spacing: 14px;
+            letter-spacing: 2px;
             color: #2c241a;
             font-family: 'Noto Serif SC', 'KaiTi', serif;
-            margin-bottom: 24px;
-            line-height: 1.3;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            text-align: center;
+            width: 100%;
         }
         .pinyin {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #b87c4f;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             font-weight: 500;
         }
 
-        /* page 2 */
+        /* page 2 - with chengyu header */
+        .page2-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #efe5db;
+        }
+        .page2-chengyu {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: #2c241a;
+            font-family: 'Noto Serif SC', 'KaiTi', serif;
+            margin-bottom: 8px;
+            white-space: nowrap;
+        }
+        .page2-pinyin {
+            font-size: 0.9rem;
+            color: #b87c4f;
+        }
         .char-grid {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
         .char-row {
             background: #faf7f2;
-            border-radius: 28px;
-            padding: 16px 20px;
+            border-radius: 24px;
+            padding: 14px 18px;
             display: flex;
             align-items: baseline;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             border: 1px solid #ede3d7;
         }
         .char-big {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
             font-family: 'Noto Serif SC', serif;
-            min-width: 60px;
+            min-width: 56px;
             color: #2c241a;
         }
         .char-pinyin {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #b87c4f;
-            min-width: 70px;
+            min-width: 65px;
             font-weight: 500;
         }
         .char-translation {
             flex: 1;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #5c4b38;
         }
         .meaning-summary {
-            margin-top: 24px;
             background: #efe7dd;
-            border-radius: 24px;
-            padding: 16px;
-            font-size: 0.9rem;
+            border-radius: 20px;
+            padding: 14px;
+            font-size: 0.85rem;
             line-height: 1.4;
         }
 
         /* page 3 quiz */
-        .quiz-scenario {
-            background: #f5efe8;
-            border-radius: 28px;
-            padding: 20px;
+        .quiz-header {
             margin-bottom: 20px;
         }
+        .quiz-header-chengyu {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #2c241a;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .quiz-scenario {
+            background: #f5efe8;
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
         .scenario-text {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             line-height: 1.45;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .quiz-choice {
             background: white;
             border: 1.5px solid #e3d8ce;
             border-radius: 60px;
-            padding: 12px 18px;
+            padding: 10px 16px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-align: center;
         }
@@ -173,9 +204,9 @@
             border-color: #c97a7a;
         }
         .feedback-msg {
-            margin-top: 12px;
+            margin-top: 10px;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
         }
         .reset-quiz-btn {
@@ -193,7 +224,7 @@
             transform: scale(0.97);
         }
 
-        /* bottom navigation - big icon only buttons */
+        /* bottom navigation - big icon buttons */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
@@ -212,7 +243,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0;
             flex: 1;
         }
         .nav-btn:active {
@@ -223,6 +253,18 @@
             background: #c9aa7b;
             color: white;
             flex: 1;
+        }
+
+        /* responsive for very small phones */
+        @media (max-width: 400px) {
+            .chengyu-characters {
+                font-size: 2.5rem;
+                letter-spacing: 1px;
+            }
+            .page2-chengyu {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
@@ -366,6 +408,7 @@
         const container = document.getElementById("pageContent");
         
         if (currentPage === 0) {
+            // Page 1: Just chengyu + pinyin
             container.innerHTML = `
                 <div class="page1-center">
                     <div class="chengyu-characters">${c.chengyu}</div>
@@ -374,7 +417,14 @@
             `;
         } 
         else if (currentPage === 1) {
-            let charsHtml = `<div class="char-grid">`;
+            // Page 2: Chengyu header + character breakdown + meaning
+            let charsHtml = `
+                <div class="page2-header">
+                    <div class="page2-chengyu">${c.chengyu}</div>
+                    <div class="page2-pinyin">${c.pinyin}</div>
+                </div>
+                <div class="char-grid">
+            `;
             c.breakdown.forEach(item => {
                 charsHtml += `
                     <div class="char-row">
@@ -392,10 +442,15 @@
             container.innerHTML = charsHtml;
         } 
         else {
+            // Page 3: Quiz with chengyu header
             if (quizAnswers.length !== c.scenarios.length) {
                 quizAnswers = new Array(c.scenarios.length).fill(null);
             }
-            let quizHtml = `<div style="margin-bottom:16px; font-weight:600; font-size:1rem;">📋 哪个场景最适合?</div>`;
+            let quizHtml = `
+                <div class="quiz-header">
+                    <div class="quiz-header-chengyu">📖 ${c.chengyu}</div>
+                </div>
+            `;
             c.scenarios.forEach((scenario, idx) => {
                 let selected = quizAnswers[idx];
                 let otherChengyus = CHENGYU_SET.filter((_, i) => i !== currentDay).map(c => c.chengyu).slice(0,2);

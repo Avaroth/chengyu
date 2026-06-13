@@ -241,6 +241,10 @@
             transform: scale(0.96);
             background: #e0d5c8;
         }
+        .nav-arrow.green {
+            background: #4caf50;
+            color: white;
+        }
         .nav-actions {
             display: flex;
             justify-content: space-between;
@@ -302,496 +306,13 @@
         <button class="nav-arrow" id="nextPageBtn">→</button>
     </div>
     
-    <div class="nav-actions">
+    <div class="nav-actions" id="navActions">
         <button class="action-btn" id="resetBottomBtn">↺</button>
-        <button class="action-btn skip-btn" id="nextDayBtn">⏭</button>
     </div>
 </div>
 
+<script src="chengyu-data.js"></script>
 <script>
-    // 30 common chengyu with randomized correct/incorrect patterns
-    const CHENGYU_SET = [
-        {
-            chengyu: "画蛇添足", pinyin: "huà shé tiān zú",
-            literalTranslation: "Draw a snake, add feet",
-            simpleMeaning: "To overdo something and ruin it",
-            breakdown: [
-                { char: "画", pinyin: "huà", english: "to draw" },
-                { char: "蛇", pinyin: "shé", english: "snake" },
-                { char: "添", pinyin: "tiān", english: "to add" },
-                { char: "足", pinyin: "zú", english: "foot" }
-            ],
-            scenarios: [
-                { text: "他给完美的画又加了几笔，反而不好看了。", correct: true },
-                { text: "她认真复习，考试得了满分。", correct: false },
-                { text: "演讲稿已经很好了，他又加了一堆废话。", correct: true }
-            ]
-        },
-        {
-            chengyu: "对牛弹琴", pinyin: "duì niú tán qín",
-            literalTranslation: "Play lute to a cow",
-            simpleMeaning: "Talk to someone who doesn't understand",
-            breakdown: [
-                { char: "对", pinyin: "duì", english: "to/towards" },
-                { char: "牛", pinyin: "niú", english: "cow" },
-                { char: "弹", pinyin: "tán", english: "to play" },
-                { char: "琴", pinyin: "qín", english: "instrument" }
-            ],
-            scenarios: [
-                { text: "给不懂代码的人解释复杂算法，他完全听不懂。", correct: true },
-                { text: "老师给认真听课的学生讲解难题，学生理解了。", correct: false },
-                { text: "跟从不听古典乐的人讲贝多芬，他毫无反应。", correct: true }
-            ]
-        },
-        {
-            chengyu: "守株待兔", pinyin: "shǒu zhū dài tù",
-            literalTranslation: "Guard stump, wait for rabbit",
-            simpleMeaning: "Wait for luck instead of working",
-            breakdown: [
-                { char: "守", pinyin: "shǒu", english: "guard" },
-                { char: "株", pinyin: "zhū", english: "stump" },
-                { char: "待", pinyin: "dài", english: "wait" },
-                { char: "兔", pinyin: "tù", english: "rabbit" }
-            ],
-            scenarios: [
-                { text: "公司不创新，天天坐等老客户上门。", correct: true },
-                { text: "他每天勤奋工作，主动寻找机会。", correct: false },
-                { text: "上次蒙对一道题，这次不复习还想靠运气。", correct: true }
-            ]
-        },
-        {
-            chengyu: "井底之蛙", pinyin: "jǐng dǐ zhī wā",
-            literalTranslation: "Frog at bottom of well",
-            simpleMeaning: "Narrow-minded person",
-            breakdown: [
-                { char: "井", pinyin: "jǐng", english: "well" },
-                { char: "底", pinyin: "dǐ", english: "bottom" },
-                { char: "之", pinyin: "zhī", english: "'s" },
-                { char: "蛙", pinyin: "wā", english: "frog" }
-            ],
-            scenarios: [
-                { text: "他从没出过省，却觉得家乡是全世界最好的。", correct: true },
-                { text: "他环游世界后分享各地见闻。", correct: false },
-                { text: "她只懂自己的专业，看不起其他领域。", correct: true }
-            ]
-        },
-        {
-            chengyu: "未雨绸缪", pinyin: "wèi yǔ chóu móu",
-            literalTranslation: "Before rain, bind windows",
-            simpleMeaning: "Prepare in advance",
-            breakdown: [
-                { char: "未", pinyin: "wèi", english: "not yet" },
-                { char: "雨", pinyin: "yǔ", english: "rain" },
-                { char: "绸缪", pinyin: "chóu móu", english: "to bind" }
-            ],
-            scenarios: [
-                { text: "每月存钱以防生病或失业。", correct: true },
-                { text: "他花光所有积蓄，生病时没钱看病。", correct: false },
-                { text: "台风来前提前加固门窗。", correct: true }
-            ]
-        },
-        {
-            chengyu: "杯弓蛇影", pinyin: "bēi gōng shé yǐng",
-            literalTranslation: "See snake in cup",
-            simpleMeaning: "Suspicious and fearful",
-            breakdown: [
-                { char: "杯", pinyin: "bēi", english: "cup" },
-                { char: "弓", pinyin: "gōng", english: "bow" },
-                { char: "蛇", pinyin: "shé", english: "snake" },
-                { char: "影", pinyin: "yǐng", english: "shadow" }
-            ],
-            scenarios: [
-                { text: "听到一声响就吓得以为是贼。", correct: true },
-                { text: "他冷静分析问题，找到了真相。", correct: false },
-                { text: "看到影子就以为是鬼，吓得不敢动。", correct: true }
-            ]
-        },
-        {
-            chengyu: "亡羊补牢", pinyin: "wáng yáng bǔ láo",
-            literalTranslation: "Lost sheep, fix pen",
-            simpleMeaning: "Fix problem before it's too late",
-            breakdown: [
-                { char: "亡", pinyin: "wáng", english: "lost" },
-                { char: "羊", pinyin: "yáng", english: "sheep" },
-                { char: "补", pinyin: "bǔ", english: "fix" },
-                { char: "牢", pinyin: "láo", english: "pen" }
-            ],
-            scenarios: [
-                { text: "考试失败后开始认真复习。", correct: true },
-                { text: "发现漏洞后及时修补。", correct: true },
-                { text: "明知有问题却不管，等更糟。", correct: false }
-            ]
-        },
-        {
-            chengyu: "掩耳盗铃", pinyin: "yǎn ěr dào líng",
-            literalTranslation: "Cover ears, steal bell",
-            simpleMeaning: "Deceive oneself",
-            breakdown: [
-                { char: "掩", pinyin: "yǎn", english: "cover" },
-                { char: "耳", pinyin: "ěr", english: "ear" },
-                { char: "盗", pinyin: "dào", english: "steal" },
-                { char: "铃", pinyin: "líng", english: "bell" }
-            ],
-            scenarios: [
-                { text: "作弊以为老师看不见。", correct: true },
-                { text: "犯错后假装没发生。", correct: true },
-                { text: "承认错误并改正。", correct: false }
-            ]
-        },
-        {
-            chengyu: "滥竽充数", pinyin: "làn yú chōng shù",
-            literalTranslation: "Pretend to play yu",
-            simpleMeaning: "Fake it in a group",
-            breakdown: [
-                { char: "滥", pinyin: "làn", english: "false" },
-                { char: "竽", pinyin: "yú", english: "instrument" },
-                { char: "充", pinyin: "chōng", english: "pretend" },
-                { char: "数", pinyin: "shù", english: "count" }
-            ],
-            scenarios: [
-                { text: "团队里不干活只拿工资。", correct: true },
-                { text: "不懂装懂混在专家里。", correct: true },
-                { text: "靠真本事获得职位。", correct: false }
-            ]
-        },
-        {
-            chengyu: "买椟还珠", pinyin: "mǎi dú huán zhū",
-            literalTranslation: "Buy box, return pearl",
-            simpleMeaning: "Choose form over substance",
-            breakdown: [
-                { char: "买", pinyin: "mǎi", english: "buy" },
-                { char: "椟", pinyin: "dú", english: "box" },
-                { char: "还", pinyin: "huán", english: "return" },
-                { char: "珠", pinyin: "zhū", english: "pearl" }
-            ],
-            scenarios: [
-                { text: "只看包装漂亮就买，不管质量。", correct: true },
-                { text: "选工作只看薪水，不看发展。", correct: true },
-                { text: "重视产品实际功能。", correct: false }
-            ]
-        },
-        {
-            chengyu: "塞翁失马", pinyin: "sài wēng shī mǎ",
-            literalTranslation: "Old man lost horse",
-            simpleMeaning: "Bad luck may bring good",
-            breakdown: [
-                { char: "塞", pinyin: "sài", english: "border" },
-                { char: "翁", pinyin: "wēng", english: "old man" },
-                { char: "失", pinyin: "shī", english: "lose" },
-                { char: "马", pinyin: "mǎ", english: "horse" }
-            ],
-            scenarios: [
-                { text: "丢了钱包，但因此没赶上出事的车。", correct: true },
-                { text: "被裁员后找到了更好的工作。", correct: true },
-                { text: "坏事就是坏事，没有任何转机。", correct: false }
-            ]
-        },
-        {
-            chengyu: "愚公移山", pinyin: "yú gōng yí shān",
-            literalTranslation: "Foolish old man moves mountain",
-            simpleMeaning: "Perseverance pays off",
-            breakdown: [
-                { char: "愚", pinyin: "yú", english: "foolish" },
-                { char: "公", pinyin: "gōng", english: "old man" },
-                { char: "移", pinyin: "yí", english: "move" },
-                { char: "山", pinyin: "shān", english: "mountain" }
-            ],
-            scenarios: [
-                { text: "每天坚持学英语，终于能流利交流。", correct: true },
-                { text: "遇到困难就放弃。", correct: false },
-                { text: "花十年时间完成一个大项目。", correct: true }
-            ]
-        },
-        {
-            chengyu: "叶公好龙", pinyin: "yè gōng hào lóng",
-            literalTranslation: "Lord Ye loves dragons",
-            simpleMeaning: "Fake love for something",
-            breakdown: [
-                { char: "叶", pinyin: "yè", english: "Ye (name)" },
-                { char: "公", pinyin: "gōng", english: "lord" },
-                { char: "好", pinyin: "hào", english: "love" },
-                { char: "龙", pinyin: "lóng", english: "dragon" }
-            ],
-            scenarios: [
-                { text: "嘴上说喜欢户外，从不去徒步。", correct: true },
-                { text: "自称爱读书，但一本书没读完过。", correct: true },
-                { text: "真正热爱并坚持自己的爱好。", correct: false }
-            ]
-        },
-        {
-            chengyu: "狐假虎威", pinyin: "hú jiǎ hǔ wēi",
-            literalTranslation: "Fox borrows tiger's might",
-            simpleMeaning: "Bully using others' power",
-            breakdown: [
-                { char: "狐", pinyin: "hú", english: "fox" },
-                { char: "假", pinyin: "jiǎ", english: "borrow" },
-                { char: "虎", pinyin: "hǔ", english: "tiger" },
-                { char: "威", pinyin: "wēi", english: "power" }
-            ],
-            scenarios: [
-                { text: "仗着老板的关系欺负同事。", correct: true },
-                { text: "靠自己的实力赢得尊重。", correct: false },
-                { text: "借着领导的名义发号施令。", correct: true }
-            ]
-        },
-        {
-            chengyu: "胸有成竹", pinyin: "xiōng yǒu chéng zhú",
-            literalTranslation: "Have bamboo in chest",
-            simpleMeaning: "Well-prepared, confident",
-            breakdown: [
-                { char: "胸", pinyin: "xiōng", english: "chest" },
-                { char: "有", pinyin: "yǒu", english: "have" },
-                { char: "成", pinyin: "chéng", english: "ready" },
-                { char: "竹", pinyin: "zhú", english: "bamboo" }
-            ],
-            scenarios: [
-                { text: "考前复习充分，信心满满。", correct: true },
-                { text: "演讲前准备了很久，不紧张。", correct: true },
-                { text: "毫无准备就去面试。", correct: false }
-            ]
-        },
-        {
-            chengyu: "指鹿为马", pinyin: "zhǐ lù wéi mǎ",
-            literalTranslation: "Call deer a horse",
-            simpleMeaning: "Deliberately misrepresent",
-            breakdown: [
-                { char: "指", pinyin: "zhǐ", english: "point" },
-                { char: "鹿", pinyin: "lù", english: "deer" },
-                { char: "为", pinyin: "wéi", english: "as" },
-                { char: "马", pinyin: "mǎ", english: "horse" }
-            ],
-            scenarios: [
-                { text: "明明错了，硬说对。", correct: true },
-                { text: "颠倒黑白，混淆是非。", correct: true },
-                { text: "诚实承认事实。", correct: false }
-            ]
-        },
-        {
-            chengyu: "三心二意", pinyin: "sān xīn èr yì",
-            literalTranslation: "Three hearts two minds",
-            simpleMeaning: "Indecisive, unfocused",
-            breakdown: [
-                { char: "三", pinyin: "sān", english: "three" },
-                { char: "心", pinyin: "xīn", english: "heart" },
-                { char: "二", pinyin: "èr", english: "two" },
-                { char: "意", pinyin: "yì", english: "mind" }
-            ],
-            scenarios: [
-                { text: "同时做几件事，一件都没做好。", correct: true },
-                { text: "今天想学这个，明天又想学那个。", correct: true },
-                { text: "专注做完一件事再做下一件。", correct: false }
-            ]
-        },
-        {
-            chengyu: "一心一意", pinyin: "yī xīn yī yì",
-            literalTranslation: "One heart one mind",
-            simpleMeaning: "Single-minded, focused",
-            breakdown: [
-                { char: "一", pinyin: "yī", english: "one" },
-                { char: "心", pinyin: "xīn", english: "heart" },
-                { char: "一", pinyin: "yī", english: "one" },
-                { char: "意", pinyin: "yì", english: "mind" }
-            ],
-            scenarios: [
-                { text: "专心学习不玩手机。", correct: true },
-                { text: "做完这件事才做下一件。", correct: true },
-                { text: "一边工作一边刷视频。", correct: false }
-            ]
-        },
-        {
-            chengyu: "对答如流", pinyin: "duì dá rú liú",
-            literalTranslation: "Answer like flowing water",
-            simpleMeaning: "Answer fluently",
-            breakdown: [
-                { char: "对", pinyin: "duì", english: "respond" },
-                { char: "答", pinyin: "dá", english: "answer" },
-                { char: "如", pinyin: "rú", english: "like" },
-                { char: "流", pinyin: "liú", english: "flow" }
-            ],
-            scenarios: [
-                { text: "面试时问题都答得很流畅。", correct: true },
-                { text: "被问到专业问题，回答得很清楚。", correct: true },
-                { text: "支支吾吾说不出话。", correct: false }
-            ]
-        },
-        {
-            chengyu: "目瞪口呆", pinyin: "mù dèng kǒu dāi",
-            literalTranslation: "Eyes wide, mouth frozen",
-            simpleMeaning: "Stunned speechless",
-            breakdown: [
-                { char: "目", pinyin: "mù", english: "eye" },
-                { char: "瞪", pinyin: "dèng", english: "stare" },
-                { char: "口", pinyin: "kǒu", english: "mouth" },
-                { char: "呆", pinyin: "dāi", english: "dumb" }
-            ],
-            scenarios: [
-                { text: "看到惊人的消息，愣在原地。", correct: true },
-                { text: "魔术太神奇，看呆了。", correct: true },
-                { text: "早有心理准备，很平静。", correct: false }
-            ]
-        },
-        {
-            chengyu: "画龙点睛", pinyin: "huà lóng diǎn jīng",
-            literalTranslation: "Draw dragon, dot eyes",
-            simpleMeaning: "Add crucial finishing touch",
-            breakdown: [
-                { char: "画", pinyin: "huà", english: "draw" },
-                { char: "龙", pinyin: "lóng", english: "dragon" },
-                { char: "点", pinyin: "diǎn", english: "dot" },
-                { char: "睛", pinyin: "jīng", english: "eye" }
-            ],
-            scenarios: [
-                { text: "报告最后加了一句关键总结。", correct: true },
-                { text: "一句话让整个演讲升华了。", correct: true },
-                { text: "加了很多没用的话，反而乱了。", correct: false }
-            ]
-        },
-        {
-            chengyu: "开门见山", pinyin: "kāi mén jiàn shān",
-            literalTranslation: "Open door, see mountain",
-            simpleMeaning: "Get straight to the point",
-            breakdown: [
-                { char: "开", pinyin: "kāi", english: "open" },
-                { char: "门", pinyin: "mén", english: "door" },
-                { char: "见", pinyin: "jiàn", english: "see" },
-                { char: "山", pinyin: "shān", english: "mountain" }
-            ],
-            scenarios: [
-                { text: "开会直接说问题，不绕弯子。", correct: true },
-                { text: "说话直奔主题，不闲聊。", correct: true },
-                { text: "说了半小时废话才进入正题。", correct: false }
-            ]
-        },
-        {
-            chengyu: "九牛一毛", pinyin: "jiǔ niú yī máo",
-            literalTranslation: "One hair from nine cows",
-            simpleMeaning: "A tiny fraction",
-            breakdown: [
-                { char: "九", pinyin: "jiǔ", english: "nine" },
-                { char: "牛", pinyin: "niú", english: "cow" },
-                { char: "一", pinyin: "yī", english: "one" },
-                { char: "毛", pinyin: "máo", english: "hair" }
-            ],
-            scenarios: [
-                { text: "损失很大，但对公司只是九牛一毛。", correct: true },
-                { text: "捐的钱对总需求来说微不足道。", correct: true },
-                { text: "花了大部分积蓄，所剩无几。", correct: false }
-            ]
-        },
-        {
-            chengyu: "一箭双雕", pinyin: "yī jiàn shuāng diāo",
-            literalTranslation: "One arrow, two eagles",
-            simpleMeaning: "Kill two birds with one stone",
-            breakdown: [
-                { char: "一", pinyin: "yī", english: "one" },
-                { char: "箭", pinyin: "jiàn", english: "arrow" },
-                { char: "双", pinyin: "shuāng", english: "double" },
-                { char: "雕", pinyin: "diāo", english: "eagle" }
-            ],
-            scenarios: [
-                { text: "出差同时拜访客户和旅游。", correct: true },
-                { text: "锻炼身体又能减肥。", correct: true },
-                { text: "做一件事只得到一个好处。", correct: false }
-            ]
-        },
-        {
-            chengyu: "千篇一律", pinyin: "qiān piān yī lǜ",
-            literalTranslation: "Thousand pieces, same rule",
-            simpleMeaning: "Boringly repetitive",
-            breakdown: [
-                { char: "千", pinyin: "qiān", english: "thousand" },
-                { char: "篇", pinyin: "piān", english: "piece" },
-                { char: "一", pinyin: "yī", english: "one" },
-                { char: "律", pinyin: "lǜ", english: "rule" }
-            ],
-            scenarios: [
-                { text: "所有文章都是一个套路。", correct: true },
-                { text: "每集剧情都一样。", correct: true },
-                { text: "每篇作品都有新意。", correct: false }
-            ]
-        },
-        {
-            chengyu: "独一无二", pinyin: "dú yī wú èr",
-            literalTranslation: "Only one, no second",
-            simpleMeaning: "Unique, one of a kind",
-            breakdown: [
-                { char: "独", pinyin: "dú", english: "only" },
-                { char: "一", pinyin: "yī", english: "one" },
-                { char: "无", pinyin: "wú", english: "without" },
-                { char: "二", pinyin: "èr", english: "second" }
-            ],
-            scenarios: [
-                { text: "全世界只有这一件艺术品。", correct: true },
-                { text: "他的风格没人能模仿。", correct: true },
-                { text: "量产的商品，到处都有。", correct: false }
-            ]
-        },
-        {
-            chengyu: "顺手牵羊", pinyin: "shùn shǒu qiān yáng",
-            literalTranslation: "Conveniently take sheep",
-            simpleMeaning: "Take something opportunistically",
-            breakdown: [
-                { char: "顺", pinyin: "shùn", english: "convenient" },
-                { char: "手", pinyin: "shǒu", english: "hand" },
-                { char: "牵", pinyin: "qiān", english: "lead" },
-                { char: "羊", pinyin: "yáng", english: "sheep" }
-            ],
-            scenarios: [
-                { text: "去同事家顺手拿了支笔。", correct: true },
-                { text: "趁没人注意拿走了小东西。", correct: true },
-                { text: "光明正大买东西。", correct: false }
-            ]
-        },
-        {
-            chengyu: "水到渠成", pinyin: "shuǐ dào qú chéng",
-            literalTranslation: "Water flows, canal forms",
-            simpleMeaning: "Things happen naturally",
-            breakdown: [
-                { char: "水", pinyin: "shuǐ", english: "water" },
-                { char: "到", pinyin: "dào", english: "arrive" },
-                { char: "渠", pinyin: "qú", english: "canal" },
-                { char: "成", pinyin: "chéng", english: "form" }
-            ],
-            scenarios: [
-                { text: "努力够了，成功自然来。", correct: true },
-                { text: "条件成熟，问题就解决了。", correct: true },
-                { text: "什么都不做等着天上掉馅饼。", correct: false }
-            ]
-        },
-        {
-            chengyu: "班门弄斧", pinyin: "bān mén nòng fǔ",
-            literalTranslation: "Show off axe at Lu Ban's door",
-            simpleMeaning: "Show off in front of expert",
-            breakdown: [
-                { char: "班", pinyin: "bān", english: "Lu Ban" },
-                { char: "门", pinyin: "mén", english: "door" },
-                { char: "弄", pinyin: "nòng", english: "play" },
-                { char: "斧", pinyin: "fǔ", english: "axe" }
-            ],
-            scenarios: [
-                { text: "在钢琴家面前炫琴技。", correct: true },
-                { text: "给专家讲他专业里的基础知识。", correct: true },
-                { text: "向前辈虚心请教。", correct: false }
-            ]
-        },
-        {
-            chengyu: "走马观花", pinyin: "zǒu mǎ guān huā",
-            literalTranslation: "Ride horse, glance at flowers",
-            simpleMeaning: "Superficial observation",
-            breakdown: [
-                { char: "走", pinyin: "zǒu", english: "ride" },
-                { char: "马", pinyin: "mǎ", english: "horse" },
-                { char: "观", pinyin: "guān", english: "view" },
-                { char: "花", pinyin: "huā", english: "flower" }
-            ],
-            scenarios: [
-                { text: "旅游就是下车拍照，不深入体验。", correct: true },
-                { text: "读书只翻目录，不细读。", correct: true },
-                { text: "仔细研究每个细节。", correct: false }
-            ]
-        }
-    ];
-
     let currentDay = 0;
     let currentPage = 0;
     let quizAnswers = [];
@@ -923,31 +444,33 @@
 
     function updateNavVisibility() {
         const nextArrow = document.getElementById("nextPageBtn");
+        const navActions = document.getElementById("navActions");
+        
         if (currentPage === 2) {
-            nextArrow.style.visibility = "hidden";
-            nextArrow.style.opacity = "0";
-            nextArrow.style.pointerEvents = "none";
+            // On page 3: hide skip button, make forward arrow green, go to next chengyu
+            navActions.innerHTML = `<button class="action-btn" id="resetBottomBtn">↺</button>`;
+            nextArrow.classList.add("green");
+            // Change behavior: forward arrow goes to next chengyu (page 0)
+            const oldNextHandler = nextArrow.onclick;
+            nextArrow.onclick = () => {
+                nextDay();
+            };
         } else {
-            nextArrow.style.visibility = "visible";
-            nextArrow.style.opacity = "1";
-            nextArrow.style.pointerEvents = "auto";
+            // On pages 1-2: normal navigation
+            navActions.innerHTML = `<button class="action-btn" id="resetBottomBtn">↺</button>`;
+            nextArrow.classList.remove("green");
+            nextArrow.onclick = () => {
+                if (currentPage < 2) {
+                    currentPage++;
+                    renderPage();
+                }
+            };
         }
+        
+        // Reattach reset button handler
+        document.getElementById("resetBottomBtn").onclick = resetProgress;
     }
 
-    function nextPage() { 
-        if (currentPage < 2) { 
-            currentPage++; 
-            renderPage(); 
-        } 
-    }
-    
-    function prevPage() { 
-        if (currentPage > 0) { 
-            currentPage--; 
-            renderPage(); 
-        } 
-    }
-    
     function nextDay() {
         let newDay = (currentDay + 1) % CHENGYU_SET.length;
         currentDay = newDay;
@@ -956,6 +479,13 @@
         currentPage = 0;
         quizAnswers = [];
         renderPage();
+    }
+    
+    function prevPage() { 
+        if (currentPage > 0) { 
+            currentPage--; 
+            renderPage(); 
+        } 
     }
     
     function resetProgress() {
@@ -971,9 +501,7 @@
     renderPage();
 
     document.getElementById("prevPageBtn").onclick = prevPage;
-    document.getElementById("nextPageBtn").onclick = nextPage;
     document.getElementById("resetBottomBtn").onclick = resetProgress;
-    document.getElementById("nextDayBtn").onclick = nextDay;
 </script>
 </body>
 </html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>每日成语 · 融会贯通</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Noto Sans CJK SC', Roboto, sans-serif;
+            background: linear-gradient(145deg, #f7f3e9 0%, #fff4e4 100%);
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-card {
+            max-width: 600px;
+            width: 100%;
+            margin: 20px auto;
+            background: rgba(255, 255, 245, 0.96);
+            border-radius: 64px 40px 64px 40px;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.3), 0 2px 6px rgba(0,0,0,0.05);
+            padding: 28px 24px 40px;
+            border: 1px solid rgba(210, 180, 140, 0.3);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            color: #3e2a1f;
+        }
+
+        h1 small {
+            font-size: 0.85rem;
+            background: #ede0c8;
+            padding: 5px 12px;
+            border-radius: 60px;
+            color: #5a3e2b;
+        }
+
+        .streak-box {
+            background: #e9dbc9;
+            border-radius: 32px;
+            padding: 8px 16px;
+            margin: 16px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            color: #4a2e1e;
+        }
+
+        .chengyu-area {
+            text-align: center;
+            margin: 20px 0 12px;
+        }
+
+        .big-chengyu {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: #2c1a0c;
+            background: #fef3e2;
+            padding: 20px 8px;
+            border-radius: 56px;
+            font-family: 'KaiTi', '楷体', serif;
+            border: 1px solid #f3e1c0;
+        }
+
+        .pinyin {
+            font-size: 1.2rem;
+            color: #a5673f;
+            margin: 12px 0 6px;
+        }
+
+        .meaning {
+            background: #faf1e2;
+            padding: 14px 16px;
+            border-radius: 32px;
+            margin: 18px 0;
+            font-weight: 500;
+            color: #2d3e2b;
+            border-left: 5px solid #c58f5a;
+        }
+
+        .example {
+            background: #fff8ef;
+            padding: 12px 16px;
+            border-radius: 28px;
+            color: #4a3b2c;
+            margin: 12px 0;
+        }
+
+        button {
+            background: #e7d6bd;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 48px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 8px 6px;
+            cursor: pointer;
+            color: #3c2a1c;
+        }
+
+        button:active {
+            transform: scale(0.97);
+            background: #dac194;
+        }
+
+        .quiz-section {
+            background: #fff4e8;
+            border-radius: 48px;
+            padding: 20px 18px;
+            margin-top: 28px;
+            border: 1px solid #f1dfca;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #3b2b1c;
+        }
+
+        .quiz-option {
+            background: white;
+            margin: 10px 0;
+            padding: 12px 16px;
+            border-radius: 60px;
+            border: 1px solid #eedbba;
+            cursor: pointer;
+        }
+
+        .quiz-option.selected {
+            background: #d9c9b0;
+            border-color: #b2824a;
+        }
+
+        .reset-btn {
+            background: #cdb28b;
+            margin-top: 20px;
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 28px;
+            color: #b59a78;
+        }
+
+        @media (max-width: 500px) {
+            .big-chengyu {
+                font-size: 2.4rem;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-card" id="app">
+    <h1>📖 融会·成语 <small>每日一得</small></h1>
+    <div class="streak-box">
+        <span>🔥 坚持学习</span>
+        <span id="dayCounter">第 1 天</span>
+    </div>
+
+    <div id="dailyContent"></div>
+    <div id="quizContainer"></div>
+
+    <div style="display: flex; justify-content: center; margin-top: 16px;">
+        <button id="revealBtn">🔍 显示释义 / 例句</button>
+        <button id="nextDayBtn">✨ 学下一个成语</button>
+    </div>
+    <button id="resetBtn" class="reset-btn">🔄 重置进度</button>
+    <footer>基于本地存储 · 每日自动换成语<br>每3天小测验巩固记忆</footer>
+</div>
+
+<script>
+    const CHENGYU_SET = [
+        { chengyu: "画蛇添足", pinyin: "huà shé tiān zú", meaning: "多此一举，弄巧成拙", example_ch: "写文章贵在简洁，不要画蛇添足。", example_en: "Don't gild the lily." },
+        { chengyu: "对牛弹琴", pinyin: "duì niú tán qín", meaning: "说话不看对象，徒劳无功", example_ch: "跟他解释量子物理简直是对牛弹琴。", example_en: "Casting pearls before swine." },
+        { chengyu: "守株待兔", pinyin: "shǒu zhū dài tù", meaning: "死守经验，不知变通", example_ch: "不要守株待兔，要主动创新。", example_en: "Wait for luck blindly." },
+        { chengyu: "亡羊补牢", pinyin: "wáng yáng bǔ láo", meaning: "出了差错及时补救，还不算晚", example_ch: "失败后亡羊补牢，下次就能避免。", example_en: "Never too late to mend." },
+        { chengyu: "杯弓蛇影", pinyin: "bēi gōng shé yǐng", meaning: "因错觉而惊慌失措", example_ch: "别杯弓蛇影，那只是个影子。", example_en: "Falsely alarmed." },
+        { chengyu: "狐假虎威", pinyin: "hú jiǎ hǔ wēi", meaning: "倚仗别人的威势欺压人", example_ch: "他仗着关系狐假虎威。", example_en: "Bully under borrowed power." },
+        { chengyu: "井底之蛙", pinyin: "jǐng dǐ zhī wā", meaning: "眼界狭窄，见识短浅", example_ch: "多出去看看，别做井底之蛙。", example_en: "Frog in a well." },
+        { chengyu: "叶公好龙", pinyin: "yè gōng hào lóng", meaning: "表面爱好，实际并不真喜欢", example_ch: "他说喜欢户外但从不去徒步。", example_en: "Professed love only." },
+        { chengyu: "掩耳盗铃", pinyin: "yǎn ěr dào líng", meaning: "自欺欺人", example_ch: "作弊就是掩耳盗铃。", example_en: "Deceiving yourself." },
+        { chengyu: "滥竽充数", pinyin: "làn yú chōng shù", meaning: "没有真才实学混在里面", example_ch: "团队中不能滥竽充数。", example_en: "Be a free rider." },
+        { chengyu: "买椟还珠", pinyin: "mǎi dú huán zhū", meaning: "取舍不当，抓次要丢主要", example_ch: "只看包装就是买椟还珠。", example_en: "Choose form over substance." },
+        { chengyu: "塞翁失马", pinyin: "sài wēng shī mǎ", meaning: "坏事可能变好事", example_ch: "塞翁失马，焉知非福。", example_en: "A loss may turn into gain." },
+        { chengyu: "愚公移山", pinyin: "yú gōng yí shān", meaning: "坚持不懈改造自然", example_ch: "科研需要愚公移山的精神。", example_en: "Perseverance moves mountains." },
+        { chengyu: "未雨绸缪", pinyin: "wèi yǔ chóu móu", meaning: "提前准备，防患未然", example_ch: "存钱是为了未雨绸缪。", example_en: "Save for a rainy day." },
+        { chengyu: "揠苗助长", pinyin: "yà miáo zhù zhǎng", meaning: "违背规律，反而坏事", example_ch: "给孩子太多压力是揠苗助长。", example_en: "Haste makes waste." }
+    ];
+
+    const STORAGE_KEY = "chengyu_daily_progress";
+    const LAST_DATE_KEY = "chengyu_last_date";
+
+    let currentDay = 0;
+    let reveal = false;
+    let quizMode = false;
+    let quizQuestions = [];
+    let currentQuizIndex = 0;
+    let userAnswers = [];
+    let quizSubmitted = false;
+
+    function getTodayStr() {
+        const d = new Date();
+        return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    }
+
+    function loadProgress() {
+        let stored = localStorage.getItem(STORAGE_KEY);
+        let lastDate = localStorage.getItem(LAST_DATE_KEY);
+        const today = getTodayStr();
+
+        if (!stored || !lastDate) {
+            currentDay = 0;
+            localStorage.setItem(STORAGE_KEY, "0");
+            localStorage.setItem(LAST_DATE_KEY, today);
+            return;
+        }
+
+        if (lastDate === today) {
+            currentDay = parseInt(stored, 10) || 0;
+        } else {
+            currentDay = (parseInt(stored, 10) + 1) % CHENGYU_SET.length;
+            localStorage.setItem(STORAGE_KEY, currentDay.toString());
+            localStorage.setItem(LAST_DATE_KEY, today);
+            reveal = false;
+            quizMode = false;
+        }
+    }
+
+    function isQuizDay() {
+        return (currentDay + 1) % 3 === 0;
+    }
+
+    function generateQuiz() {
+        let indices = [];
+        const start = Math.max(0, currentDay - 5);
+        for (let i = start; i <= currentDay; i++) indices.push(i);
+        
+        let pool = [];
+        for (let idx of indices) {
+            const item = CHENGYU_SET[idx];
+            const type = Math.random() > 0.5 ? "meaning2chengyu" : "chengyu2meaning";
+            let questionText, correctAnswer, options;
+            if (type === "meaning2chengyu") {
+                questionText = `“${item.meaning}” 对应的成语是？`;
+                correctAnswer = item.chengyu;
+                let others = CHENGYU_SET.filter((_, i) => i !== idx).map(c => c.chengyu);
+                let distinct = [...new Set(others)].slice(0, 3);
+                while(distinct.length < 3) distinct.push("一心一意");
+                options = [correctAnswer, ...distinct].sort(() => 0.5 - Math.random());
+            } else {
+                questionText = `成语 “${item.chengyu}” 的意思是什么？`;
+                correctAnswer = item.meaning;
+                let others = CHENGYU_SET.filter((_, i) => i !== idx).map(c => c.meaning);
+                let distinct = [...new Set(others)].slice(0, 3);
+                while(distinct.length < 3) distinct.push("坚持不懈");
+                options = [correctAnswer, ...distinct].sort(() => 0.5 - Math.random());
+            }
+            pool.push({ question: questionText, options, correctAnswer, idx });
+        }
+        return pool.sort(() => 0.5 - Math.random()).slice(0, 5);
+    }
+
+    function render() {
+        const obj = CHENGYU_SET[currentDay];
+        let meaningHtml = "", exampleHtml = "";
+        if (reveal) {
+            meaningHtml = `<div class="meaning">📖 ${obj.meaning}</div>`;
+            exampleHtml = `<div class="example">✍️ ${obj.example_ch}<br><span style="font-size:0.8rem;">📌 ${obj.example_en}</span></div>`;
+        }
+        document.getElementById("dailyContent").innerHTML = `
+            <div class="chengyu-area">
+                <div class="big-chengyu">${obj.chengyu}</div>
+                <div class="pinyin">${obj.pinyin}</div>
+                ${meaningHtml}
+                ${exampleHtml}
+            </div>
+        `;
+        document.getElementById("dayCounter").innerText = `第 ${currentDay+1} 天`;
+
+        if (isQuizDay() && !quizMode) {
+            quizQuestions = generateQuiz();
+            if (quizQuestions.length) {
+                quizMode = true;
+                currentQuizIndex = 0;
+                userAnswers = new Array(quizQuestions.length).fill(undefined);
+                quizSubmitted = false;
+            }
+        }
+
+        if (quizMode && quizQuestions.length) {
+            let q = quizQuestions[currentQuizIndex];
+            let html = `<div class="quiz-section"><div class="quiz-question">📝 测验 (${currentQuizIndex+1}/${quizQuestions.length})</div>`;
+            html += `<div class="quiz-question">❓ ${q.question}</div>`;
+            q.options.forEach((opt, i) => {
+                let isSel = (userAnswers[currentQuizIndex] === i);
+                html += `<div class="quiz-option ${isSel ? 'selected' : ''}" data-opt="${i}">${String.fromCharCode(65+i)}. ${opt}</div>`;
+            });
+            if (userAnswers[currentQuizIndex] !== undefined && !quizSubmitted) {
+                html += `<button id="submitQuizBtn" style="margin-top:12px;">✅ 提交</button>`;
+            } else if (quizSubmitted) {
+                let isCorrect = (q.options[userAnswers[currentQuizIndex]] === q.correctAnswer);
+                html += `<div style="margin-top:12px; color:${isCorrect ? '#2b6e3c' : '#b13e3e'};">${isCorrect ? '✓ 正确！' : '✗ 正确答案: ' + q.correctAnswer}</div>`;
+                if (currentQuizIndex + 1 < quizQuestions.length) {
+                    html += `<button id="nextQuizBtn">➡️ 下一题</button>`;
+                } else {
+                    html += `<button id="finishQuizBtn">🏆 完成</button>`;
+                }
+            }
+            html += `</div>`;
+            document.getElementById("quizContainer").innerHTML = html;
+
+            document.querySelectorAll('.quiz-option').forEach(el => {
+                el.onclick = () => {
+                    if (!quizSubmitted) {
+                        userAnswers[currentQuizIndex] = parseInt(el.dataset.opt);
+                        render();
+                    }
+                };
+            });
+            const submitBtn = document.getElementById("submitQuizBtn");
+            if (submitBtn) submitBtn.onclick = () => { quizSubmitted = true; render(); };
+            const nextBtn = document.getElementById("nextQuizBtn");
+            if (nextBtn) nextBtn.onclick = () => { currentQuizIndex++; quizSubmitted = false; render(); };
+            const finishBtn = document.getElementById("finishQuizBtn");
+            if (finishBtn) finishBtn.onclick = () => { quizMode = false; render(); };
+        } else {
+            document.getElementById("quizContainer").innerHTML = `<div class="quiz-section" style="text-align:center;">${isQuizDay() ? "🎉 今日测验已准备好" : "📖 每3天一次测验"}</div>`;
+        }
+    }
+
+    loadProgress();
+    render();
+
+    document.getElementById("revealBtn").onclick = () => { reveal = !reveal; render(); };
+    document.getElementById("nextDayBtn").onclick = () => {
+        let newDay = (currentDay + 1) % CHENGYU_SET.length;
+        currentDay = newDay;
+        localStorage.setItem(STORAGE_KEY, currentDay.toString());
+        localStorage.setItem(LAST_DATE_KEY, getTodayStr());
+        reveal = false;
+        quizMode = false;
+        render();
+    };
+    document.getElementById("resetBtn").onclick = () => {
+        currentDay = 0;
+        localStorage.setItem(STORAGE_KEY, "0");
+        localStorage.setItem(LAST_DATE_KEY, getTodayStr());
+        reveal = false;
+        quizMode = false;
+        render();
+    };
+</script>
+</body>
+</html>

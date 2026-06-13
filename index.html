@@ -35,15 +35,41 @@
             flex-direction: column;
         }
 
-        /* scrollable content area */
+        /* progress header */
+        .progress-header {
+            padding: 16px 20px 8px 20px;
+            background: white;
+            border-bottom: 1px solid #f0dfd2;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-shrink: 0;
+        }
+        .progress-text {
+            font-size: 0.8rem;
+            color: #b88a6a;
+            font-weight: 500;
+        }
+        .completed-badge {
+            background: #e8d5c4;
+            color: #8b3a2a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .completed-badge.completed {
+            background: #c8dcc8;
+            color: #4a6a3a;
+        }
+
         .page-content {
             flex: 1;
             overflow-y: auto;
-            padding: 28px 24px;
+            padding: 20px 24px;
             scroll-behavior: smooth;
         }
 
-        /* custom scrollbar */
         .page-content::-webkit-scrollbar {
             width: 4px;
         }
@@ -56,7 +82,6 @@
             border-radius: 10px;
         }
 
-        /* page 1 */
         .page1-center {
             min-height: 100%;
             display: flex;
@@ -83,8 +108,16 @@
             letter-spacing: 1px;
             font-weight: 500;
         }
+        .completed-check {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: #8b3a2a;
+            background: #f0e8df;
+            padding: 8px 16px;
+            border-radius: 40px;
+            display: inline-block;
+        }
 
-        /* page 2 */
         .page2-header {
             text-align: center;
             margin-bottom: 24px;
@@ -155,7 +188,6 @@
             color: #8b6b5a;
         }
 
-        /* page 3 - yes/no quiz */
         .quiz-header {
             text-align: center;
             margin-bottom: 24px;
@@ -241,7 +273,6 @@
             transform: scale(0.97);
         }
 
-        /* navigation - sticky at bottom */
         .nav-arrows {
             display: flex;
             justify-content: space-between;
@@ -326,6 +357,11 @@
 </head>
 <body>
 <div class="card">
+    <div class="progress-header">
+        <span class="progress-text" id="progressCounter">加载中...</span>
+        <span class="completed-badge" id="completedBadge"></span>
+    </div>
+
     <div class="page-content" id="pageContent"></div>
 
     <div class="nav-arrows">
@@ -340,12 +376,27 @@
 
 <script src="chengyu-data.js"></script>
 <script>
+    let shuffledIndices = [];
+    let currentPosition = 0;
     let currentDay = 0;
     let currentPage = 0;
     let quizAnswers = [];
+    
+    // Track completed chengyu (all 3 quiz answers correct)
+    let completedChengyu = new Array(CHENGYU_SET.length).fill(false);
 
-    const DAY_KEY = "chengyu3_day";
+    const DAY_KEY = "chengyu3_position";
     const DATE_KEY = "chengyu3_date";
+    const SHUFFLE_KEY = "chengyu3_shuffle";
+    const COMPLETED_KEY = "chengyu3_completed";
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
 
     function getToday() {
         const d = new Date();
@@ -353,34 +404,86 @@
     }
 
     function loadProgress() {
-        let savedDay = localStorage.getItem(DAY_KEY);
+        let savedPosition = localStorage.getItem(DAY_KEY);
         let savedDate = localStorage.getItem(DATE_KEY);
+        let savedShuffle = localStorage.getItem(SHUFFLE_KEY);
+        let savedCompleted = localStorage.getItem(COMPLETED_KEY);
         let today = getToday();
-        if (!savedDay || !savedDate) {
-            currentDay = Math.floor(Math.random() * CHENGYU_SET.length);
-            localStorage.setItem(DAY_KEY, currentDay.toString());
-            localStorage.setItem(DATE_KEY, today);
-            return;
+        
+        // Load completed chengyu
+        if (savedCompleted) {
+            completedChengyu = JSON.parse(savedCompleted);
         }
-        if (savedDate === today) {
-            currentDay = parseInt(savedDay, 10) % CHENGYU_SET.length;
+        
+        // Initialize or retrieve shuffled order
+        if (!savedShuffle) {
+            shuffledIndices = [...Array(CHENGYU_SET.length).keys()];
+            shuffledIndices = shuffleArray(shuffledIndices);
+            localStorage.setItem(SHUFFLE_KEY, JSON.stringify(shuffledIndices));
         } else {
-            let newDay = (parseInt(savedDay, 10) + 1) % CHENGYU_SET.length;
-            localStorage.setItem(DAY_KEY, newDay.toString());
+            shuffledIndices = JSON.parse(savedShuffle);
+        }
+        
+        if (!savedPosition || !savedDate) {
+            currentPosition = 0;
+            localStorage.setItem(DAY_KEY, currentPosition.toString());
             localStorage.setItem(DATE_KEY, today);
-            currentDay = newDay;
+        } else if (savedDate === today) {
+            currentPosition = parseInt(savedPosition, 10);
+        } else {
+            currentPosition = (parseInt(savedPosition, 10) + 1) % CHENGYU_SET.length;
+            localStorage.setItem(DAY_KEY, currentPosition.toString());
+            localStorage.setItem(DATE_KEY, today);
+        }
+        
+        currentDay = shuffledIndices[currentPosition];
+    }
+
+    function saveCompleted() {
+        localStorage.setItem(COMPLETED_KEY, JSON.stringify(completedChengyu));
+    }
+
+    function checkAndMarkCompleted() {
+        const c = CHENGYU_SET[currentDay];
+        const allCorrect = quizAnswers.length === c.scenarios.length && 
+                           quizAnswers.every((answer, idx) => answer === c.scenarios[idx].correct);
+        
+        if (allCorrect && !completedChengyu[currentDay]) {
+            completedChengyu[currentDay] = true;
+            saveCompleted();
+            return true;
+        }
+        return false;
+    }
+
+    function updateProgressUI() {
+        const completedCount = completedChengyu.filter(v => v === true).length;
+        const totalCount = CHENGYU_SET.length;
+        const progressPercent = Math.round((completedCount / totalCount) * 100);
+        
+        document.getElementById("progressCounter").innerHTML = `📚 ${completedCount}/${totalCount} · ${progressPercent}%`;
+        
+        const badge = document.getElementById("completedBadge");
+        if (completedChengyu[currentDay]) {
+            badge.innerHTML = "✓ 已完成";
+            badge.classList.add("completed");
+        } else {
+            badge.innerHTML = "📖 未完成";
+            badge.classList.remove("completed");
         }
     }
 
     function renderPage() {
         const c = CHENGYU_SET[currentDay];
         const container = document.getElementById("pageContent");
+        const isCompleted = completedChengyu[currentDay];
         
         if (currentPage === 0) {
             container.innerHTML = `
                 <div class="page1-center">
                     <div class="chengyu-characters">${c.chengyu}</div>
                     <div class="pinyin">${c.pinyin}</div>
+                    ${isCompleted ? '<div class="completed-check">✓ 已完成</div>' : ''}
                 </div>
             `;
         } 
@@ -421,7 +524,6 @@
             c.scenarios.forEach((scenario, idx) => {
                 let answer = quizAnswers[idx];
                 let isCorrect = (answer !== null && answer === scenario.correct);
-                let isWrong = (answer !== null && answer !== scenario.correct);
                 
                 quizHtml += `<div class="scenario-card" data-idx="${idx}">
                                 <div class="scenario-text">📖 ${scenario.text}</div>
@@ -442,6 +544,13 @@
             
             let allAnswered = quizAnswers.every(a => a !== null);
             if (allAnswered) {
+                const justCompleted = checkAndMarkCompleted();
+                if (justCompleted) {
+                    updateProgressUI();
+                    // Re-render to show completion message
+                    renderPage();
+                    return;
+                }
                 quizHtml += `<button class="reset-quiz-btn" id="resetQuizBtn">⟳ 重做</button>`;
             }
             
@@ -466,44 +575,27 @@
             };
         }
         
-        updateNavVisibility();
-        
-        // scroll to top when changing page
+        updateArrowStyles();
+        updateProgressUI();
         container.scrollTop = 0;
     }
 
-    function updateNavVisibility() {
+    function updateArrowStyles() {
         const nextArrow = document.getElementById("nextPageBtn");
-        const navActions = document.getElementById("navActions");
-        
         if (currentPage === 2) {
-            navActions.innerHTML = `<button class="action-btn" id="resetBottomBtn">↺</button>`;
             nextArrow.classList.add("green");
-            nextArrow.onclick = () => {
-                nextDay();
-            };
         } else {
-            navActions.innerHTML = `<button class="action-btn" id="resetBottomBtn">↺</button>`;
             nextArrow.classList.remove("green");
-            nextArrow.onclick = () => {
-                if (currentPage < 2) {
-                    currentPage++;
-                    renderPage();
-                }
-            };
         }
-        
-        document.getElementById("resetBottomBtn").onclick = resetProgress;
     }
 
-    function nextDay() {
-        let newDay = (currentDay + 1) % CHENGYU_SET.length;
-        currentDay = newDay;
-        localStorage.setItem(DAY_KEY, currentDay.toString());
-        localStorage.setItem(DATE_KEY, getToday());
-        currentPage = 0;
-        quizAnswers = [];
-        renderPage();
+    function nextPage() { 
+        if (currentPage === 2) {
+            nextDay();
+        } else if (currentPage < 2) { 
+            currentPage++; 
+            renderPage(); 
+        } 
     }
     
     function prevPage() { 
@@ -513,10 +605,29 @@
         } 
     }
     
-    function resetProgress() {
-        currentDay = 0;
-        localStorage.setItem(DAY_KEY, "0");
+    function nextDay() {
+        currentPosition = (currentPosition + 1) % CHENGYU_SET.length;
+        localStorage.setItem(DAY_KEY, currentPosition.toString());
         localStorage.setItem(DATE_KEY, getToday());
+        currentDay = shuffledIndices[currentPosition];
+        currentPage = 0;
+        quizAnswers = [];
+        renderPage();
+    }
+    
+    function resetProgress() {
+        // Reshuffle everything and reset all progress
+        shuffledIndices = [...Array(CHENGYU_SET.length).keys()];
+        shuffledIndices = shuffleArray(shuffledIndices);
+        localStorage.setItem(SHUFFLE_KEY, JSON.stringify(shuffledIndices));
+        
+        completedChengyu = new Array(CHENGYU_SET.length).fill(false);
+        saveCompleted();
+        
+        currentPosition = 0;
+        localStorage.setItem(DAY_KEY, currentPosition.toString());
+        localStorage.setItem(DATE_KEY, getToday());
+        currentDay = shuffledIndices[currentPosition];
         currentPage = 0;
         quizAnswers = [];
         renderPage();
@@ -526,6 +637,7 @@
     renderPage();
 
     document.getElementById("prevPageBtn").onclick = prevPage;
+    document.getElementById("nextPageBtn").onclick = nextPage;
     document.getElementById("resetBottomBtn").onclick = resetProgress;
 </script>
 </body>

@@ -35,6 +35,7 @@
             flex-direction: column;
         }
 
+        /* progress header - compact */
         .progress-header {
             padding: 12px 20px;
             background: white;
@@ -58,6 +59,7 @@
             font-weight: 600;
         }
 
+        /* content area - NO top padding, NO centering */
         .page-content {
             flex: 1;
             overflow-y: auto;
@@ -77,6 +79,7 @@
             border-radius: 10px;
         }
 
+        /* page 0 - no centering, start from top */
         .page1-center {
             min-height: 100%;
             display: flex;
@@ -120,7 +123,7 @@
             padding-bottom: 16px;
             border-bottom: 2px solid #f0e0d4;
         }
-        .title-row {
+        .title-with-audio {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -335,6 +338,7 @@
             background: #e4cfbf;
         }
 
+        /* Audio button styles */
         .audio-icon-btn {
             background: #f0dfd2;
             border: none;
@@ -353,6 +357,14 @@
         .audio-icon-btn:active {
             transform: scale(0.92);
             background: #e4cfbf;
+        }
+        .title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
         }
 
         @media (max-width: 400px) {
@@ -409,27 +421,20 @@
     </div>
 </div>
 
-<!-- Data files - add more here as you create them -->
-<script src="data/chengyu-base.js"></script>
-<script src="data/chengyu-set1.js"></script>
-<script src="data/chengyu-set2.js"></script>
-<script src="data/chengyu-set3.js"></script>
-<script src="data/chengyu-set4.js"></script>
-<script src="data/chengyu-loader.js"></script>
-
+<script src="chengyu-data.js"></script>
 <script>
-    let CHENGYU_SET = [];
     let shuffledIndices = [];
     let currentPosition = 0;
     let currentDay = 0;
     let currentPage = 0;
     let quizAnswers = [];
-    let completedChengyu = [];
+    
+    let completedChengyu = new Array(CHENGYU_SET.length).fill(false);
 
-    const DAY_KEY = "chengyu5_position";
-    const DATE_KEY = "chengyu5_date";
-    const SHUFFLE_KEY = "chengyu5_shuffle";
-    const COMPLETED_KEY = "chengyu5_completed";
+    const DAY_KEY = "chengyu3_position";
+    const DATE_KEY = "chengyu3_date";
+    const SHUFFLE_KEY = "chengyu3_shuffle";
+    const COMPLETED_KEY = "chengyu3_completed";
 
     function shuffleArray(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
@@ -453,8 +458,6 @@
         
         if (savedCompleted) {
             completedChengyu = JSON.parse(savedCompleted);
-        } else {
-            completedChengyu = new Array(CHENGYU_SET.length).fill(false);
         }
         
         if (!savedShuffle) {
@@ -513,19 +516,23 @@
         }
     }
 
+    // Audio playback function
     function playAudio(chengyuText) {
         if (!window.speechSynthesis) {
             alert("您的浏览器不支持语音播放");
             return;
         }
         
+        // Stop any currently playing speech
         window.speechSynthesis.cancel();
         
+        // Create new utterance
         const utterance = new SpeechSynthesisUtterance(chengyuText);
         utterance.lang = 'zh-CN';
         utterance.rate = 0.85;
         utterance.pitch = 1.0;
         
+        // Try to use a Chinese voice if available
         const speak = () => {
             const voices = window.speechSynthesis.getVoices();
             const chineseVoice = voices.find(voice => voice.lang === 'zh-CN' || voice.lang === 'zh');
@@ -533,6 +540,7 @@
             window.speechSynthesis.speak(utterance);
         };
         
+        // Handle voices loaded
         if (window.speechSynthesis.getVoices().length) {
             speak();
         } else {
@@ -541,11 +549,6 @@
     }
 
     function renderPage() {
-        if (!CHENGYU_SET.length) {
-            document.getElementById("pageContent").innerHTML = '<div style="text-align:center;padding:40px;">加载成语数据中...</div>';
-            return;
-        }
-        
         const c = CHENGYU_SET[currentDay];
         const container = document.getElementById("pageContent");
         const isCompleted = completedChengyu[currentDay];
@@ -734,25 +737,8 @@
         renderPage();
     }
 
-    // Initialize after data loads
-    window.initApp = function() {
-        if (typeof window.CHENGYU_DATA !== 'undefined' && window.CHENGYU_DATA.length) {
-            CHENGYU_SET = window.CHENGYU_DATA;
-            completedChengyu = new Array(CHENGYU_SET.length).fill(false);
-            loadProgress();
-            renderPage();
-        }
-    };
-    
-    // Fallback if data loads async
-    setTimeout(() => {
-        if (CHENGYU_SET.length === 0 && typeof window.CHENGYU_DATA !== 'undefined') {
-            CHENGYU_SET = window.CHENGYU_DATA;
-            completedChengyu = new Array(CHENGYU_SET.length).fill(false);
-            loadProgress();
-            renderPage();
-        }
-    }, 100);
+    loadProgress();
+    renderPage();
 
     document.getElementById("prevPageBtn").onclick = prevPage;
     document.getElementById("nextPageBtn").onclick = nextPage;

@@ -123,13 +123,20 @@
             padding-bottom: 16px;
             border-bottom: 2px solid #f0e0d4;
         }
+        .title-with-audio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
         .page2-chengyu {
             font-size: 2rem;
             font-weight: 600;
             letter-spacing: 3px;
             color: #8b3a2a;
             font-family: 'Noto Serif SC', 'KaiTi', serif;
-            margin-bottom: 6px;
             white-space: nowrap;
         }
         .page2-pinyin {
@@ -331,6 +338,34 @@
             background: #e4cfbf;
         }
 
+        /* Audio button styles */
+        .audio-icon-btn {
+            background: #f0dfd2;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s ease;
+            color: #8b3a2a;
+        }
+        .audio-icon-btn:active {
+            transform: scale(0.92);
+            background: #e4cfbf;
+        }
+        .title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 400px) {
             .chengyu-characters {
                 font-size: 2.5rem;
@@ -357,6 +392,11 @@
             }
             .page-content {
                 padding: 0 16px 16px 16px;
+            }
+            .audio-icon-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -475,6 +515,38 @@
         }
     }
 
+    // Audio playback function
+    function playAudio(chengyuText) {
+        if (!window.speechSynthesis) {
+            alert("您的浏览器不支持语音播放");
+            return;
+        }
+        
+        // Stop any currently playing speech
+        window.speechSynthesis.cancel();
+        
+        // Create new utterance
+        const utterance = new SpeechSynthesisUtterance(chengyuText);
+        utterance.lang = 'zh-CN';
+        utterance.rate = 0.85;
+        utterance.pitch = 1.0;
+        
+        // Try to use a Chinese voice if available
+        const speak = () => {
+            const voices = window.speechSynthesis.getVoices();
+            const chineseVoice = voices.find(voice => voice.lang === 'zh-CN' || voice.lang === 'zh');
+            if (chineseVoice) utterance.voice = chineseVoice;
+            window.speechSynthesis.speak(utterance);
+        };
+        
+        // Handle voices loaded
+        if (window.speechSynthesis.getVoices().length) {
+            speak();
+        } else {
+            window.speechSynthesis.onvoiceschanged = speak;
+        }
+    }
+
     function renderPage() {
         const c = CHENGYU_SET[currentDay];
         const container = document.getElementById("pageContent");
@@ -483,16 +555,29 @@
         if (currentPage === 0) {
             container.innerHTML = `
                 <div class="page1-center">
-                    <div class="chengyu-characters">${c.chengyu}</div>
+                    <div class="title-row">
+                        <div class="chengyu-characters">${c.chengyu}</div>
+                        <button class="audio-icon-btn" id="playAudioBtn">🔊</button>
+                    </div>
                     <div class="pinyin">${c.pinyin}</div>
                     ${isCompleted ? '<div class="completed-check">✓ 已完成</div>' : ''}
                 </div>
             `;
+            const audioBtn = document.getElementById("playAudioBtn");
+            if (audioBtn) {
+                audioBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    playAudio(c.chengyu);
+                });
+            }
         } 
         else if (currentPage === 1) {
             container.innerHTML = `
                 <div class="page2-header">
-                    <div class="page2-chengyu">${c.chengyu}</div>
+                    <div class="title-row">
+                        <div class="page2-chengyu">${c.chengyu}</div>
+                        <button class="audio-icon-btn" id="playAudioBtn">🔊</button>
+                    </div>
                     <div class="page2-pinyin">${c.pinyin}</div>
                 </div>
                 <div class="meaning-first">
@@ -509,6 +594,13 @@
                     `).join('')}
                 </div>
             `;
+            const audioBtn = document.getElementById("playAudioBtn");
+            if (audioBtn) {
+                audioBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    playAudio(c.chengyu);
+                });
+            }
         } 
         else {
             if (quizAnswers.length !== c.scenarios.length) {
@@ -517,7 +609,10 @@
             
             let quizHtml = `
                 <div class="quiz-header">
-                    <div class="quiz-header-chengyu">${c.chengyu}</div>
+                    <div class="title-row">
+                        <div class="quiz-header-chengyu">${c.chengyu}</div>
+                        <button class="audio-icon-btn" id="playAudioBtn">🔊</button>
+                    </div>
                     <div class="quiz-header-pinyin">${c.pinyin}</div>
                     <div class="quiz-subheader">适合这个成语吗？</div>
                 </div>
@@ -556,6 +651,14 @@
             }
             
             container.innerHTML = quizHtml;
+            
+            const audioBtn = document.getElementById("playAudioBtn");
+            if (audioBtn) {
+                audioBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    playAudio(c.chengyu);
+                });
+            }
             
             document.querySelectorAll('.scenario-card').forEach(card => {
                 const idx = parseInt(card.dataset.idx);

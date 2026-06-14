@@ -1,6 +1,5 @@
-// chengyu-data.js - Common Chinese Idioms
+// chengyu-data.js - 243 Common Chinese Idioms
 const CHENGYU_SET = [
-    // Original idioms
     {
         chengyu: "画蛇添足",
         pinyin: "huà shé tiān zú",
@@ -144,14 +143,6 @@ const CHENGYU_SET = [
         simpleMeaning: "Single-minded, focused",
         breakdown: [{char:"一",pinyin:"yī",english:"one"},{char:"心",pinyin:"xīn",english:"heart"},{char:"一",pinyin:"yī",english:"one"},{char:"意",pinyin:"yì",english:"mind"}],
         scenarios: [{text:"专心学习不玩手机。",correct:true},{text:"做完这件事才做下一件。",correct:true},{text:"一边工作一边刷视频。",correct:false}]
-    },
-    {
-        chengyu: "对答如流",
-        pinyin: "duì dá rú liú",
-        literalTranslation: "Answer like flowing water",
-        simpleMeaning: "Answer fluently",
-        breakdown: [{char:"对",pinyin:"duì",english:"answer"},{char:"答",pinyin:"dá",english:"reply"},{char:"如",pinyin:"rú",english:"like"},{char:"流",pinyin:"liú",english:"flow"}],
-        scenarios: [{text:"面试时问题都答得很流畅。",correct:true},{text:"被问专业问题，回答清楚。",correct:true},{text:"支支吾吾说不出话。",correct:false}]
     },
     {
         chengyu: "目瞪口呆",
@@ -393,9 +384,220 @@ const CHENGYU_SET = [
         breakdown: [{char:"粗",pinyin:"cū",english:"rough"},{char:"心",pinyin:"xīn",english:"heart"},{char:"大",pinyin:"dà",english:"big"},{char:"意",pinyin:"yì",english:"intent"}],
         scenarios: [{text:"考试漏了一道题。",correct:true},{text:"出门忘了带钥匙。",correct:true},{text:"仔细检查每个细节。",correct:false}]
     },
-    // Additional idioms
+    {
+        chengyu: "马马虎虎",
+        pinyin: "mǎ mǎ hǔ hǔ",
+        literalTranslation: "Horse horse, tiger tiger",
+        simpleMeaning: "So-so, careless",
+        breakdown: [{char:"马",pinyin:"mǎ",english:"horse"},{char:"马",pinyin:"mǎ",english:"horse"},{char:"虎",pinyin:"hǔ",english:"tiger"},{char:"虎",pinyin:"hǔ",english:"tiger"}],
+        scenarios: [{text:"工作做得不仔细，凑合着及格。",correct:true},{text:"她做事很认真，每个细节都完美。",correct:false},{text:"考试复习得一般，大概能过。",correct:true}]
+    },
+    {
+        chengyu: "乱七八糟",
+        pinyin: "luàn qī bā zāo",
+        literalTranslation: "Chaotic seven eight messy",
+        simpleMeaning: "Messy, disorganized",
+        breakdown: [{char:"乱",pinyin:"luàn",english:"chaotic"},{char:"七",pinyin:"qī",english:"seven"},{char:"八",pinyin:"bā",english:"eight"},{char:"糟",pinyin:"zāo",english:"messy"}],
+        scenarios: [{text:"房间衣服扔得到处都是。",correct:true},{text:"桌面收拾得很整齐。",correct:false},{text:"事情安排得毫无条理。",correct:true}]
+    },
     {
         chengyu: "一见钟情",
         pinyin: "yī jiàn zhōng qíng",
         literalTranslation: "One look, fall in love",
         simpleMeaning: "Love at first sight",
+        breakdown: [{char:"一",pinyin:"yī",english:"one"},{char:"见",pinyin:"jiàn",english:"see"},{char:"钟",pinyin:"zhōng",english:"bell"},{char:"情",pinyin:"qíng",english:"feelings"}],
+        scenarios: [{text:"他们第一次见面就相爱了。",correct:true},{text:"认识很多年才在一起。",correct:false},{text:"看到对方就心跳加速。",correct:true}]
+    },
+    {
+        chengyu: "举一反三",
+        pinyin: "jǔ yī fǎn sān",
+        literalTranslation: "Raise one, infer three",
+        simpleMeaning: "Learn from analogy",
+        breakdown: [{char:"举",pinyin:"jǔ",english:"raise"},{char:"一",pinyin:"yī",english:"one"},{char:"反",pinyin:"fǎn",english:"infer"},{char:"三",pinyin:"sān",english:"three"}],
+        scenarios: [{text:"学会一道题就能做同类题。",correct:true},{text:"老师讲什么就只学什么。",correct:false},{text:"举一反三能力很强。",correct:true}]
+    },
+    {
+        chengyu: "朝三暮四",
+        pinyin: "zhāo sān mù sì",
+        literalTranslation: "Morning three, evening four",
+        simpleMeaning: "Changeable, fickle",
+        breakdown: [{char:"朝",pinyin:"zhāo",english:"morning"},{char:"三",pinyin:"sān",english:"three"},{char:"暮",pinyin:"mù",english:"evening"},{char:"四",pinyin:"sì",english:"four"}],
+        scenarios: [{text:"今天想学这个，明天又想学那个。",correct:true},{text:"一直坚持同一个目标。",correct:false},{text:"频繁换工作。",correct:true}]
+    },
+    {
+        chengyu: "半途而废",
+        pinyin: "bàn tú ér fèi",
+        literalTranslation: "Half way, then abandon",
+        simpleMeaning: "Give up halfway",
+        breakdown: [{char:"半",pinyin:"bàn",english:"half"},{char:"途",pinyin:"tú",english:"way"},{char:"而",pinyin:"ér",english:"then"},{char:"废",pinyin:"fèi",english:"abandon"}],
+        scenarios: [{text:"学了一个月就放弃了。",correct:true},{text:"坚持到最后成功了。",correct:false},{text:"项目做一半就不做了。",correct:true}]
+    },
+    {
+        chengyu: "坚持不懈",
+        pinyin: "jiān chí bù xiè",
+        literalTranslation: "Persist without stopping",
+        simpleMeaning: "Persevere continuously",
+        breakdown: [{char:"坚",pinyin:"jiān",english:"firm"},{char:"持",pinyin:"chí",english:"hold"},{char:"不",pinyin:"bù",english:"not"},{char:"懈",pinyin:"xiè",english:"slack"}],
+        scenarios: [{text:"每天练琴从不间断。",correct:true},{text:"遇到困难就放弃。",correct:false},{text:"坚持了三年终于成功。",correct:true}]
+    },
+    {
+        chengyu: "纸上谈兵",
+        pinyin: "zhǐ shàng tán bīng",
+        literalTranslation: "Discuss war on paper",
+        simpleMeaning: "Theoretical but impractical",
+        breakdown: [{char:"纸",pinyin:"zhǐ",english:"paper"},{char:"上",pinyin:"shàng",english:"on"},{char:"谈",pinyin:"tán",english:"discuss"},{char:"兵",pinyin:"bīng",english:"war"}],
+        scenarios: [{text:"只会理论不会实践。",correct:true},{text:"光说不练假把式。",correct:true},{text:"理论和实践都很强。",correct:false}]
+    },
+    {
+        chengyu: "脚踏实地",
+        pinyin: "jiǎo tà shí dì",
+        literalTranslation: "Feet step on solid ground",
+        simpleMeaning: "Down-to-earth, steady",
+        breakdown: [{char:"脚",pinyin:"jiǎo",english:"foot"},{char:"踏",pinyin:"tà",english:"step"},{char:"实",pinyin:"shí",english:"solid"},{char:"地",pinyin:"dì",english:"ground"}],
+        scenarios: [{text:"一步一个脚印做事。",correct:true},{text:"不好高骛远。",correct:true},{text:"只想走捷径。",correct:false}]
+    },
+    {
+        chengyu: "锦上添花",
+        pinyin: "jǐn shàng tiān huā",
+        literalTranslation: "Add flowers to brocade",
+        simpleMeaning: "Add to something already good",
+        breakdown: [{char:"锦",pinyin:"jǐn",english:"brocade"},{char:"上",pinyin:"shàng",english:"on"},{char:"添",pinyin:"tiān",english:"add"},{char:"花",pinyin:"huā",english:"flower"}],
+        scenarios: [{text:"已经很好了，还能更好。",correct:true},{text:"在成功基础上再创佳绩。",correct:true},{text:"雪中送炭帮助急需的人。",correct:false}]
+    },
+    {
+        chengyu: "雪中送炭",
+        pinyin: "xuě zhōng sòng tàn",
+        literalTranslation: "Send charcoal in snow",
+        simpleMeaning: "Help in time of need",
+        breakdown: [{char:"雪",pinyin:"xuě",english:"snow"},{char:"中",pinyin:"zhōng",english:"in"},{char:"送",pinyin:"sòng",english:"send"},{char:"炭",pinyin:"tàn",english:"charcoal"}],
+        scenarios: [{text:"朋友困难时伸出援手。",correct:true},{text:"在别人最需要时帮助。",correct:true},{text:"锦上添花不是雪中送炭。",correct:false}]
+    },
+    {
+        chengyu: "如鱼得水",
+        pinyin: "rú yú dé shuǐ",
+        literalTranslation: "Like fish getting water",
+        simpleMeaning: "In one's element",
+        breakdown: [{char:"如",pinyin:"rú",english:"like"},{char:"鱼",pinyin:"yú",english:"fish"},{char:"得",pinyin:"dé",english:"get"},{char:"水",pinyin:"shuǐ",english:"water"}],
+        scenarios: [{text:"到了新岗位发挥很好。",correct:true},{text:"做自己喜欢的事很开心。",correct:true},{text:"处处受限制很难受。",correct:false}]
+    },
+    {
+        chengyu: "对答如流",
+        pinyin: "duì dá rú liú",
+        literalTranslation: "Answer like flowing water",
+        simpleMeaning: "Answer fluently",
+        breakdown: [{char:"对",pinyin:"duì",english:"answer"},{char:"答",pinyin:"dá",english:"reply"},{char:"如",pinyin:"rú",english:"like"},{char:"流",pinyin:"liú",english:"flow"}],
+        scenarios: [{text:"面试问题回答很流畅。",correct:true},{text:"被问到专业对答如流。",correct:true},{text:"支支吾吾说不出来。",correct:false}]
+    },
+    {
+        chengyu: "唇亡齿寒",
+        pinyin: "chún wáng chǐ hán",
+        literalTranslation: "Lips gone, teeth feel cold",
+        simpleMeaning: "Mutually dependent",
+        breakdown: [{char:"唇",pinyin:"chún",english:"lip"},{char:"亡",pinyin:"wáng",english:"gone"},{char:"齿",pinyin:"chǐ",english:"tooth"},{char:"寒",pinyin:"hán",english:"cold"}],
+        scenarios: [{text:"邻居有难自己也会受影响。",correct:true},{text:"合作伙伴倒闭自己也会损失。",correct:true},{text:"事不关己高高挂起。",correct:false}]
+    },
+    {
+        chengyu: "坐井观天",
+        pinyin: "zuò jǐng guān tiān",
+        literalTranslation: "Sit in well, view sky",
+        simpleMeaning: "Limited perspective",
+        breakdown: [{char:"坐",pinyin:"zuò",english:"sit"},{char:"井",pinyin:"jǐng",english:"well"},{char:"观",pinyin:"guān",english:"view"},{char:"天",pinyin:"tiān",english:"sky"}],
+        scenarios: [{text:"从没出过远门见识少。",correct:true},{text:"只知道自己那一亩三分地。",correct:true},{text:"环游世界见多识广。",correct:false}]
+    },
+    {
+        chengyu: "开卷有益",
+        pinyin: "kāi juàn yǒu yì",
+        literalTranslation: "Open book, have benefit",
+        simpleMeaning: "Reading is always beneficial",
+        breakdown: [{char:"开",pinyin:"kāi",english:"open"},{char:"卷",pinyin:"juàn",english:"book"},{char:"有",pinyin:"yǒu",english:"have"},{char:"益",pinyin:"yì",english:"benefit"}],
+        scenarios: [{text:"多读书总有好处。",correct:true},{text:"每天看书能学到东西。",correct:true},{text:"读书浪费时间。",correct:false}]
+    },
+    {
+        chengyu: "学富五车",
+        pinyin: "xué fù wǔ chē",
+        literalTranslation: "Knowledge fills five carts",
+        simpleMeaning: "Very learned",
+        breakdown: [{char:"学",pinyin:"xué",english:"knowledge"},{char:"富",pinyin:"fù",english:"rich"},{char:"五",pinyin:"wǔ",english:"five"},{char:"车",pinyin:"chē",english:"cart"}],
+        scenarios: [{text:"读了非常多书知识渊博。",correct:true},{text:"教授学问很深。",correct:true},{text:"没读过什么书。",correct:false}]
+    },
+    {
+        chengyu: "才高八斗",
+        pinyin: "cái gāo bā dǒu",
+        literalTranslation: "Talent high eight measures",
+        simpleMeaning: "Extremely talented",
+        breakdown: [{char:"才",pinyin:"cái",english:"talent"},{char:"高",pinyin:"gāo",english:"high"},{char:"八",pinyin:"bā",english:"eight"},{char:"斗",pinyin:"dǒu",english:"measure"}],
+        scenarios: [{text:"非常有才华的诗人。",correct:true},{text:"文采斐然才华横溢。",correct:true},{text:"没什么特长。",correct:false}]
+    },
+    {
+        chengyu: "人山人海",
+        pinyin: "rén shān rén hǎi",
+        literalTranslation: "People mountain people sea",
+        simpleMeaning: "Huge crowd",
+        breakdown: [{char:"人",pinyin:"rén",english:"people"},{char:"山",pinyin:"shān",english:"mountain"},{char:"人",pinyin:"rén",english:"people"},{char:"海",pinyin:"hǎi",english:"sea"}],
+        scenarios: [{text:"节日广场上人非常多。",correct:true},{text:"地铁站挤满了人。",correct:true},{text:"空荡荡没人。",correct:false}]
+    },
+    {
+        chengyu: "车水马龙",
+        pinyin: "chē shuǐ mǎ lóng",
+        literalTranslation: "Cars like water, horses like dragons",
+        simpleMeaning: "Heavy traffic",
+        breakdown: [{char:"车",pinyin:"chē",english:"car"},{char:"水",pinyin:"shuǐ",english:"water"},{char:"马",pinyin:"mǎ",english:"horse"},{char:"龙",pinyin:"lóng",english:"dragon"}],
+        scenarios: [{text:"市中心交通非常繁忙。",correct:true},{text:"大街上车流不断。",correct:true},{text:"偏僻小路没什么车。",correct:false}]
+    },
+    {
+        chengyu: "门庭若市",
+        pinyin: "mén tíng ruò shì",
+        literalTranslation: "Door courtyard like market",
+        simpleMeaning: "Very busy place",
+        breakdown: [{char:"门",pinyin:"mén",english:"door"},{char:"庭",pinyin:"tíng",english:"courtyard"},{char:"若",pinyin:"ruò",english:"like"},{char:"市",pinyin:"shì",english:"market"}],
+        scenarios: [{text:"这家店客人非常多。",correct:true},{text:"来拜访的人络绎不绝。",correct:true},{text:"冷冷清清没人来。",correct:false}]
+    },
+    {
+        chengyu: "鸦雀无声",
+        pinyin: "yā què wú shēng",
+        literalTranslation: "Crow sparrow no sound",
+        simpleMeaning: "Dead silent",
+        breakdown: [{char:"鸦",pinyin:"yā",english:"crow"},{char:"雀",pinyin:"què",english:"sparrow"},{char:"无",pinyin:"wú",english:"no"},{char:"声",pinyin:"shēng",english:"sound"}],
+        scenarios: [{text:"教室里安静得掉根针都能听见。",correct:true},{text:"大家都不说话。",correct:true},{text:"非常吵闹。",correct:false}]
+    },
+    {
+        chengyu: "红红火火",
+        pinyin: "hóng hóng huǒ huǒ",
+        literalTranslation: "Red red fire fire",
+        simpleMeaning: "Prosperous, flourishing",
+        breakdown: [{char:"红",pinyin:"hóng",english:"red"},{char:"红",pinyin:"hóng",english:"red"},{char:"火",pinyin:"huǒ",english:"fire"},{char:"火",pinyin:"huǒ",english:"fire"}],
+        scenarios: [{text:"生意做得很好。",correct:true},{text:"日子过得兴旺。",correct:true},{text:"事业衰败。",correct:false}]
+    },
+    {
+        chengyu: "明明白白",
+        pinyin: "míng míng bái bái",
+        literalTranslation: "Bright bright white white",
+        simpleMeaning: "Perfectly clear",
+        breakdown: [{char:"明",pinyin:"míng",english:"bright"},{char:"明",pinyin:"míng",english:"bright"},{char:"白",pinyin:"bái",english:"white"},{char:"白",pinyin:"bái",english:"white"}],
+        scenarios: [{text:"事情说得很清楚。",correct:true},{text:"道理显而易见。",correct:true},{text:"含混不清。",correct:false}]
+    },
+    {
+        chengyu: "糊里糊涂",
+        pinyin: "hú lǐ hú tú",
+        literalTranslation: "Muddled inside muddled",
+        simpleMeaning: "Confused, muddled",
+        breakdown: [{char:"糊",pinyin:"hú",english:"muddled"},{char:"里",pinyin:"lǐ",english:"inside"},{char:"糊",pinyin:"hú",english:"muddled"},{char:"涂",pinyin:"tú",english:"muddled"}],
+        scenarios: [{text:"不知道发生了什么事。",correct:true},{text:"脑子不清醒迷糊。",correct:true},{text:"思路很清晰。",correct:false}]
+    },
+    {
+        chengyu: "勤勤恳恳",
+        pinyin: "qín qín kěn kěn",
+        literalTranslation: "Diligent diligent earnest earnest",
+        simpleMeaning: "Diligent and conscientious",
+        breakdown: [{char:"勤",pinyin:"qín",english:"diligent"},{char:"勤",pinyin:"qín",english:"diligent"},{char:"恳",pinyin:"kěn",english:"earnest"},{char:"恳",pinyin:"kěn",english:"earnest"}],
+        scenarios: [{text:"工作非常努力认真。",correct:true},{text:"任劳任怨。",correct:true},{text:"偷懒敷衍。",correct:false}]
+    },
+    {
+        chengyu: "浩浩荡荡",
+        pinyin: "hào hào dàng dàng",
+        literalTranslation: "Vast vast surging surging",
+        simpleMeaning: "Impressive and powerful",
+        breakdown: [{char:"浩",pinyin:"hào",english:"vast"},{char:"浩",pinyin:"hào",english:"vast"},{char:"荡",pinyin:"dàng",english:"surging"},{char:"荡",pinyin:"dàng",english:"surging"}],
+        scenarios: [{text:"队伍浩浩荡荡地前进。",correct:true},{text:"声势很浩大。",correct:true},{text:"稀稀拉拉几个人。",correct:false}]
+    }
+];

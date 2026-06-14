@@ -59,7 +59,7 @@
             font-weight: 600;
         }
 
-        /* content area - NO top padding */
+        /* content area - NO top padding, NO centering */
         .page-content {
             flex: 1;
             overflow-y: auto;
@@ -79,15 +79,15 @@
             border-radius: 10px;
         }
 
-        /* page 1 - no padding */
+        /* page 0 - no centering, start from top */
         .page1-center {
             min-height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             text-align: center;
-            padding: 0;
+            padding: 20px 0 0 0;
         }
         .chengyu-characters {
             font-size: 3.2rem;
@@ -119,7 +119,7 @@
         .page2-header {
             text-align: center;
             margin-bottom: 24px;
-            padding-top: 0;
+            padding-top: 8px;
             padding-bottom: 16px;
             border-bottom: 2px solid #f0e0d4;
         }
@@ -197,7 +197,7 @@
         .quiz-header {
             text-align: center;
             margin-bottom: 24px;
-            padding-top: 0;
+            padding-top: 8px;
         }
         .quiz-header-chengyu {
             font-size: 1.8rem;
@@ -352,6 +352,7 @@
             justify-content: center;
             transition: all 0.1s ease;
             color: #8b3a2a;
+            flex-shrink: 0;
         }
         .audio-icon-btn:active {
             transform: scale(0.92);
